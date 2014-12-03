@@ -1,6 +1,6 @@
 <?php
 
-namespace Ibrows\DataTrans\Api\Authorization\Data;
+namespace Ibrows\DataTrans\Api\Authorization\Data\Response;
 
 use Ibrows\DataTrans\Pattern;
 use Ibrows\DataTrans\Serializer\MappingConfiguration;
@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Mapping\ClassMetadata;
 class FailedAuthorizationResponse extends AbstractAuthorizationResponse
 {
     /**
-     * @var int
+     * @var string
      */
     protected $errorCode;
 
@@ -38,12 +38,12 @@ class FailedAuthorizationResponse extends AbstractAuthorizationResponse
     protected $reqType;
 
     /**
-     * @var int
+     * @var string
      */
     protected $acqErrorCode;
 
     /**
-     * @return int
+     * @return string
      */
     public function getErrorCode()
     {
@@ -51,7 +51,7 @@ class FailedAuthorizationResponse extends AbstractAuthorizationResponse
     }
 
     /**
-     * @param int $errorCode
+     * @param string $errorCode
      * @return $this
      */
     public function setErrorCode($errorCode)
@@ -133,7 +133,7 @@ class FailedAuthorizationResponse extends AbstractAuthorizationResponse
     }
 
     /**
-     * @return int
+     * @return string
      */
     public function getAcqErrorCode()
     {
@@ -141,7 +141,7 @@ class FailedAuthorizationResponse extends AbstractAuthorizationResponse
     }
 
     /**
-     * @param int $acqErrorCode
+     * @param string $acqErrorCode
      * @return $this
      */
     public function setAcqErrorCode($acqErrorCode)

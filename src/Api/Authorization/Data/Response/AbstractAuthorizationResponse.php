@@ -1,6 +1,6 @@
 <?php
 
-namespace Ibrows\DataTrans\Api\Authorization\Data;
+namespace Ibrows\DataTrans\Api\Authorization\Data\Response;
 
 use Ibrows\DataTrans\Pattern;
 use Ibrows\DataTrans\Serializer\AbstractData;
@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Mapping\ClassMetadata;
 abstract class AbstractAuthorizationResponse extends AbstractData
 {
     /**
-     * @var int
+     * @var string
      */
     protected $uppTransactionId;
 
@@ -25,7 +25,7 @@ abstract class AbstractAuthorizationResponse extends AbstractData
     protected $refNo;
 
     /**
-     * @var int
+     * @var string
      */
     protected $amount;
 
@@ -45,7 +45,7 @@ abstract class AbstractAuthorizationResponse extends AbstractData
     protected $uppMsgType;
 
     /**
-     * @return int
+     * @return string
      */
     public function getUppTransactionId()
     {
@@ -53,7 +53,7 @@ abstract class AbstractAuthorizationResponse extends AbstractData
     }
 
     /**
-     * @param int $uppTransactionId
+     * @param string $uppTransactionId
      * @return $this
      */
     public function setUppTransactionId($uppTransactionId)
@@ -81,7 +81,7 @@ abstract class AbstractAuthorizationResponse extends AbstractData
     }
 
     /**
-     * @return int
+     * @return string
      */
     public function getAmount()
     {
@@ -89,7 +89,7 @@ abstract class AbstractAuthorizationResponse extends AbstractData
     }
 
     /**
-     * @param int $amount
+     * @param string $amount
      * @return $this
      */
     public function setAmount($amount)

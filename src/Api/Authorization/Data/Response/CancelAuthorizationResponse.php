@@ -1,6 +1,6 @@
 <?php
 
-namespace Ibrows\DataTrans\Api\Authorization\Data;
+namespace Ibrows\DataTrans\Api\Authorization\Data\Response;
 
 use Ibrows\DataTrans\Constants;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;

@@ -49,4 +49,24 @@ class Constants
     const PAYMENTMETHOD_REKACARD = 'REK';
     const PAYMENTMETHOD_SWISSBILLING = 'SWB';
     const PAYMENTMETHOD_SATURNWINNERCARD = 'SWC';
+
+    const MONTH_JANUARY = '01';
+    const MONTH_FEBRUARY = '02';
+    const MONTH_MARCH = '03';
+    const MONTH_APRIL = '04';
+    const MONTH_MAY = '05';
+    const MONTH_JUNE = '06';
+    const MONTH_JULY = '07';
+    const MONTH_AUGUST = '08';
+    const MONTH_SEBTEMBER = '09';
+    const MONTH_OCTOBER = '10';
+    const MONTH_NOVEMBER = '11';
+    const MONTH_DECEMBER = '12';
+
+    const TESTCARD1_TYPE = self::PAYMENTMETHOD_VISA;
+    const TESTCARD1_NUMBER = '4242424242424242';
+    const TESTCARD1_EXPM = '12';
+    const TESTCARD1_EXPY = '15';
+    const TESTCARD1_CVV = '123';
+    const TESTCARD1_COUNTRY = 'CHE';
 }

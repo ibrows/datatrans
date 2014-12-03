@@ -160,20 +160,6 @@ class DataTransErrorHandler
     }
 
     /**
-     * @param  string                  $expect
-     * @param  string                  $actual
-     * @throws DataTransResultException
-     */
-    public function result($expect, $actual)
-    {
-        $this->logger->critical('DataTrans: result not 0: {result}!', array('expect' => $expect, 'actual' => $actual));
-
-        throw new DataTransResultException($this->prepareExceptionMessage(
-            'DataTrans: result not 0: {result}!', array('expect' => $expect, 'actual' => $actual)
-        ));
-    }
-
-    /**
      * @param        $message
      * @param  array $context
      * @return mixed

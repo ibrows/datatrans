@@ -1,6 +1,6 @@
 <?php
 
-namespace Ibrows\DataTrans\Api\Authorization\Data;
+namespace Ibrows\DataTrans\Api\Authorization\Data\Response;
 
 use Ibrows\DataTrans\Pattern;
 use Ibrows\DataTrans\Serializer\MappingConfiguration;
@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Mapping\ClassMetadata;
 class SuccessfulAuthorizationResponse extends AbstractAuthorizationResponse
 {
     /**
-     * @var int
+     * @var string
      */
     protected $responseCode;
 
@@ -53,12 +53,12 @@ class SuccessfulAuthorizationResponse extends AbstractAuthorizationResponse
     protected $sign2;
 
     /**
-     * @var int
+     * @var string
      */
     protected $virtualCardNo;
 
     /**
-     * @return int
+     * @return string
      */
     public function getResponseCode()
     {
@@ -66,7 +66,7 @@ class SuccessfulAuthorizationResponse extends AbstractAuthorizationResponse
     }
 
     /**
-     * @param int $responseCode
+     * @param string $responseCode
      * @return $this
      */
     public function setResponseCode($responseCode)
@@ -202,7 +202,7 @@ class SuccessfulAuthorizationResponse extends AbstractAuthorizationResponse
     }
 
     /**
-     * @return int
+     * @return string
      */
     public function getVirtualCardNo()
     {
@@ -210,7 +210,7 @@ class SuccessfulAuthorizationResponse extends AbstractAuthorizationResponse
     }
 
     /**
-     * @param int $virtualCardNo
+     * @param string $virtualCardNo
      * @return $this
      */
     public function setVirtualCardNo($virtualCardNo)
