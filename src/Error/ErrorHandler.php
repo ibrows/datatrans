@@ -7,7 +7,7 @@ use Saxulum\HttpClient\Response;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
-class DataTransErrorHandler
+class ErrorHandler
 {
     /**
      * @var LoggerInterface
@@ -66,7 +66,7 @@ class DataTransErrorHandler
     /**
      * @param $class
      * @param $propertyName
-     * @throws DataTransSerializeException
+     * @throws SerializeException
      */
     public function mappingNotFoundPropertyName($class, $propertyName)
     {
@@ -77,7 +77,7 @@ class DataTransErrorHandler
             )
         );
 
-        throw new DataTransSerializeException($this->prepareExceptionMessage(
+        throw new SerializeException($this->prepareExceptionMessage(
             "DataTrans: there is no property with name '{propertyName}' on class {class}!", array(
                 'propertyName' => $propertyName,
                 'class' => $class
@@ -88,7 +88,7 @@ class DataTransErrorHandler
     /**
      * @param $class
      * @param $propertyName
-     * @throws DataTransSerializeException
+     * @throws SerializeException
      */
     public function mappingDuplicatePropertyName($class, $propertyName)
     {
@@ -99,7 +99,7 @@ class DataTransErrorHandler
             )
         );
 
-        throw new DataTransSerializeException($this->prepareExceptionMessage(
+        throw new SerializeException($this->prepareExceptionMessage(
             "DataTrans: duplicate property with name '{propertyName}' within configuration on class {class}!", array(
                 'propertyName' => $propertyName,
                 'class' => $class
@@ -110,7 +110,7 @@ class DataTransErrorHandler
     /**
      * @param $class
      * @param $serializeName
-     * @throws DataTransSerializeException
+     * @throws SerializeException
      */
     public function mappingDuplicateSerializedName($class, $serializeName)
     {
@@ -121,7 +121,7 @@ class DataTransErrorHandler
             )
         );
 
-        throw new DataTransSerializeException($this->prepareExceptionMessage(
+        throw new SerializeException($this->prepareExceptionMessage(
             "DataTrans: duplicate serialize name with name '{serializeName}' within configuration on class {class}!", array(
                 'serializeName' => $serializeName,
                 'class' => $class
@@ -131,7 +131,7 @@ class DataTransErrorHandler
 
     /**
      * @param $xml
-     * @throws DataTransXMLParseException
+     * @throws XMLParseException
      */
     public function xmlParse($xml)
     {
@@ -139,7 +139,7 @@ class DataTransErrorHandler
             'xml' => $xml
         ));
 
-        throw new DataTransXMLParseException($this->prepareExceptionMessage(
+        throw new XMLParseException($this->prepareExceptionMessage(
             "DataTrans: xml '{xml}' is not parseable!", array(
                 'xml' => $xml
             )
@@ -148,13 +148,13 @@ class DataTransErrorHandler
 
     /**
      * @param  Response                  $response
-     * @throws DataTransResponseException
+     * @throws ResponseException
      */
     public function response(Response $response)
     {
         $this->logger->critical('DataTrans: request failed: {content}!', array('content' => $response->getContent()));
 
-        throw new DataTransResponseException($this->prepareExceptionMessage(
+        throw new ResponseException($this->prepareExceptionMessage(
             'DataTrans: request failed: {content}!', array('content' => $response->getContent())
         ));
     }

@@ -5,7 +5,7 @@ namespace Ibrows\Tests\DataTrans\Api\Authorization;
 use Ibrows\DataTrans\Api\Authorization\Authorization;
 use Ibrows\DataTrans\Api\Authorization\Data\Request\HiddenAuthorizationRequest;
 use Ibrows\DataTrans\Constants;
-use Ibrows\DataTrans\Error\DataTransErrorHandler;
+use Ibrows\DataTrans\Error\ErrorHandler;
 use Ibrows\Tests\DataTrans\DataTransProvider;
 use Pimple\Container;
 use Saxulum\HttpClient\History;
@@ -20,8 +20,8 @@ class CreditCardTest extends \PHPUnit_Framework_TestCase
         /** @var Authorization $dataTransAuthorization */
         $dataTransAuthorization = $container['datatrans_authorization'];
 
-        /** @var DataTransErrorHandler $dataTransErrorHandler */
-        $dataTransErrorHandler = $container['datatrans_error_handler'];
+        /** @var ErrorHandler $errorHandler */
+        $errorHandler = $container['datatrans_error_handler'];
 
         $later = new \DateTime('+6 months');
 
@@ -31,17 +31,12 @@ class CreditCardTest extends \PHPUnit_Framework_TestCase
 
         try {
             $dataTransAuthorization->authorizationRequest(HiddenAuthorizationRequest::getInstance(
-                Constants::TEST_PASSWORD,
-                Constants::TEST_ACCOUNT,
-                Constants::TEST_CARD,
-                $later->format('my'),
-                Constants::TEST_CVC,
+                Constants::TEST_MERCHANTID,
                 Constants::TEST_AMOUNT,
-                Constants::TEST_CURRENCY,
-                $orderId
+                Constants::TEST_CURRENCY
             ), $history);
 
-            $this->assertCount(0, $dataTransErrorHandler->getAndCleanViolations());
+            $this->assertCount(0, $errorHandler->getAndCleanViolations());
         } catch (\Exception $e) {
             print (string) $history;
             throw $e;

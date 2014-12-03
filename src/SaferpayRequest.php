@@ -3,7 +3,7 @@
 namespace Ibrows\DataTrans;
 
 use Saxulum\HttpClient\History;
-use Ibrows\DataTrans\Error\DataTransErrorHandler;
+use Ibrows\DataTrans\Error\ErrorHandler;
 use Saxulum\HttpClient\HistoryEntry;
 use Saxulum\HttpClient\HttpClientInterface;
 use Saxulum\HttpClient\Request;
@@ -16,14 +16,14 @@ class DataTransRequest
     protected $httpClient;
 
     /**
-     * @var DataTransErrorHandler
+     * @var ErrorHandler
      */
     protected $saferpayErrorHandler;
 
     /**
      * @param HttpClientInterface $httpClient
      */
-    public function __construct(HttpClientInterface $httpClient, DataTransErrorHandler $saferpayErrorHandler)
+    public function __construct(HttpClientInterface $httpClient, ErrorHandler $saferpayErrorHandler)
     {
         $this->httpClient = $httpClient;
         $this->saferpayErrorHandler = $saferpayErrorHandler;

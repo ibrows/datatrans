@@ -63,10 +63,14 @@ class Constants
     const MONTH_NOVEMBER = '11';
     const MONTH_DECEMBER = '12';
 
-    const TESTCARD1_TYPE = self::PAYMENTMETHOD_VISA;
-    const TESTCARD1_NUMBER = '4242424242424242';
-    const TESTCARD1_EXPM = '12';
-    const TESTCARD1_EXPY = '15';
-    const TESTCARD1_CVV = '123';
-    const TESTCARD1_COUNTRY = 'CHE';
+    const TEST_MERCHANTID = '1000011011';
+    const TEST_AMOUNT = '1000';
+    const TEST_CURRENCY = 'CHF';
+
+    const TEST_CARD1_TYPE = self::PAYMENTMETHOD_VISA;
+    const TEST_CARD1_NUMBER = '4242424242424242';
+    const TEST_CARD1_EXPM = '12';
+    const TEST_CARD1_EXPY = '15';
+    const TEST_CARD1_CVV = '123';
+    const TEST_CARD1_COUNTRY = 'CHE';
 }

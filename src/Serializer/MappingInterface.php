@@ -2,8 +2,8 @@
 
 namespace Ibrows\DataTrans\Serializer;
 
-use Ibrows\DataTrans\Error\DataTransErrorHandler;
-use Ibrows\DataTrans\Error\DataTransSerializeException;
+use Ibrows\DataTrans\Error\ErrorHandler;
+use Ibrows\DataTrans\Error\SerializeException;
 
 interface MappingInterface
 {
@@ -13,10 +13,10 @@ interface MappingInterface
     public function getMappingConfigurations();
 
     /**
-     * @param  DataTransErrorHandler       $errorHandler
-     * @throws DataTransSerializeException
+     * @param  ErrorHandler       $errorHandler
+     * @throws SerializeException
      */
-    public function validateMappingConfiguration(DataTransErrorHandler $errorHandler);
+    public function validateMappingConfiguration(ErrorHandler $errorHandler);
 
     /**
      * @return array

@@ -7,8 +7,8 @@ use Buzz\Client\FileGetContents;
 use Buzz\Util\CookieJar;
 use Ibrows\DataTrans\Api\Authorization\Authorization;
 use Ibrows\DataTrans\DataTransRequest;
-use Ibrows\DataTrans\Error\DataTransErrorHandler;
-use Ibrows\DataTrans\Serializer\DataTransSerializer;
+use Ibrows\DataTrans\Error\ErrorHandler;
+use Ibrows\DataTrans\Serializer\Serializer;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 use Saxulum\HttpClient\Buzz\HttpClient;
@@ -40,11 +40,11 @@ class DataTransProvider implements ServiceProviderInterface
         };
 
         $pimple['datatrans_error_handler'] = function () use ($pimple) {
-            return new DataTransErrorHandler($pimple['datatrans_logger']);
+            return new ErrorHandler($pimple['datatrans_logger']);
         };
 
         $pimple['datatrans_serializer'] = function () use ($pimple) {
-            return new DataTransSerializer($pimple['datatrans_error_handler']);
+            return new Serializer($pimple['datatrans_error_handler']);
         };
 
         $pimple['datatrans_request'] = function () use ($pimple) {

@@ -5,9 +5,9 @@ namespace Ibrows\DataTrans\Api\Authorization;
 use Ibrows\DataTrans\Api\Authorization\Data\Request\AbstractAuthorizationRequest;
 use Ibrows\DataTrans\Constants;
 use Ibrows\DataTrans\DataTransRequest;
-use Ibrows\DataTrans\Error\DataTransErrorHandler;
-use Ibrows\DataTrans\Error\DataTransResponseException;
-use Ibrows\DataTrans\Serializer\DataTransSerializer;
+use Ibrows\DataTrans\Error\ErrorHandler;
+use Ibrows\DataTrans\Error\ResponseException;
+use Ibrows\DataTrans\Serializer\Serializer;
 use Saxulum\HttpClient\History;
 use Saxulum\HttpClient\Request;
 use Saxulum\HttpClient\Response;
@@ -21,14 +21,14 @@ class Authorization
     protected $validator;
 
     /**
-     * @var DataTransErrorHandler
+     * @var ErrorHandler
      */
-    protected $dataTransErrorHandler;
+    protected $errorHandler;
 
     /**
-     * @var DataTransSerializer
+     * @var Serializer
      */
-    protected $dataTransSerializer;
+    protected $serializer;
 
     /**
      * @var DataTransRequest
@@ -37,20 +37,20 @@ class Authorization
 
     /**
      * @param ValidatorInterface   $validator
-     * @param DataTransErrorHandler $DataTransErrorHandler
-     * @param DataTransSerializer   $DataTransSerializer
+     * @param ErrorHandler $ErrorHandler
+     * @param Serializer   $Serializer
      * @param DataTransRequest      $DataTransRequest
      */
     public function __construct(
         ValidatorInterface $validator,
-        DataTransErrorHandler $DataTransErrorHandler,
-        DataTransSerializer $DataTransSerializer,
+        ErrorHandler $ErrorHandler,
+        Serializer $Serializer,
         DataTransRequest $DataTransRequest
 
     ) {
         $this->validator = $validator;
-        $this->dataTransErrorHandler = $DataTransErrorHandler;
-        $this->dataTransSerializer = $DataTransSerializer;
+        $this->errorHandler = $ErrorHandler;
+        $this->serializer = $Serializer;
         $this->dataTransRequest = $DataTransRequest;
     }
 
@@ -58,14 +58,14 @@ class Authorization
      * @param  AbstractAuthorizationRequest           $authorizationRequest
      * @param  History                   $history
      * @return Response
-     * @throws DataTransResponseException
+     * @throws ResponseException
      */
     public function authorizationRequest(AbstractAuthorizationRequest $authorizationRequest, History $history = null)
     {
         $violations = $this->validator->validate($authorizationRequest);
-        $this->dataTransErrorHandler->violations($violations);
+        $this->errorHandler->violations($violations);
 
-        $serializedAuthorizationRequest = $this->dataTransSerializer->serializeToQuery($authorizationRequest);
+        $serializedAuthorizationRequest = $this->serializer->serializeToQuery($authorizationRequest);
 
         $response = $this->dataTransRequest->request(
             Request::METHOD_GET,

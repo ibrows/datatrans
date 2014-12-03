@@ -2,19 +2,19 @@
 
 namespace Ibrows\DataTrans\Serializer;
 
-use Ibrows\DataTrans\Error\DataTransErrorHandler;
+use Ibrows\DataTrans\Error\ErrorHandler;
 
-class DataTransSerializer
+class Serializer
 {
     /**
-     * @var DataTransErrorHandler
+     * @var ErrorHandler
      */
     protected $saferpayErrorHandler;
 
     /**
-     * @param DataTransErrorHandler $saferpayErrorHandler
+     * @param ErrorHandler $saferpayErrorHandler
      */
-    public function __construct(DataTransErrorHandler $saferpayErrorHandler)
+    public function __construct(ErrorHandler $saferpayErrorHandler)
     {
         $this->saferpayErrorHandler = $saferpayErrorHandler;
     }
