@@ -6,7 +6,7 @@ use Buzz\Browser;
 use Buzz\Client\FileGetContents;
 use Buzz\Util\CookieJar;
 use Ibrows\DataTrans\Api\Authorization\Authorization;
-use Ibrows\DataTrans\DataTransRequest;
+use Ibrows\DataTrans\RequestHandler;
 use Ibrows\DataTrans\Error\ErrorHandler;
 use Ibrows\DataTrans\Serializer\Serializer;
 use Pimple\Container;
@@ -48,7 +48,7 @@ class DataTransProvider implements ServiceProviderInterface
         };
 
         $pimple['datatrans_request'] = function () use ($pimple) {
-            return new DataTransRequest(
+            return new RequestHandler(
                 new HttpClient(),
                 $pimple['datatrans_error_handler']
             );
@@ -59,7 +59,7 @@ class DataTransProvider implements ServiceProviderInterface
             $buzzClient->setMaxRedirects(0);
             $httpClient = new HttpClient(new Browser($buzzClient));
 
-            return new DataTransRequest(
+            return new RequestHandler(
                 $httpClient,
                 $pimple['datatrans_error_handler']
             );

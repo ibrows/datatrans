@@ -8,7 +8,7 @@ use Saxulum\HttpClient\HistoryEntry;
 use Saxulum\HttpClient\HttpClientInterface;
 use Saxulum\HttpClient\Request;
 
-class DataTransRequest
+class RequestHandler
 {
     /**
      * @var HttpClientInterface

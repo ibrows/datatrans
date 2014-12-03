@@ -23,14 +23,14 @@ function getParam($key, $default = null)
 <?php
 
 use Ibrows\DataTrans\Error\ErrorHandler;
-use Ibrows\DataTrans\DataTransRequest;
+use Ibrows\DataTrans\RequestHandler;
 use Ibrows\DataTrans\Validator\DataTransValidator;
 use Psr\Log\NullLogger;
 use Saxulum\HttpClient\Buzz\HttpClient;
 
 $ErrorHandler = new ErrorHandler(new Logger());
 $Serializer = new Serializer($ErrorHandler);
-$DataTransRequest = new DataTransRequest(new HttpClient(), $ErrorHandler);
+$RequestHandler = new RequestHandler(new HttpClient(), $ErrorHandler);
 $validator = Validation::createValidatorBuilder()
   ->addMethodMapping('loadValidatorMetadata')
   ->getValidator()

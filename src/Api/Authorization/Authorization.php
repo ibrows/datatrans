@@ -4,7 +4,7 @@ namespace Ibrows\DataTrans\Api\Authorization;
 
 use Ibrows\DataTrans\Api\Authorization\Data\Request\AbstractAuthorizationRequest;
 use Ibrows\DataTrans\Constants;
-use Ibrows\DataTrans\DataTransRequest;
+use Ibrows\DataTrans\RequestHandler;
 use Ibrows\DataTrans\Error\ErrorHandler;
 use Ibrows\DataTrans\Error\ResponseException;
 use Ibrows\DataTrans\Serializer\Serializer;
@@ -31,27 +31,27 @@ class Authorization
     protected $serializer;
 
     /**
-     * @var DataTransRequest
+     * @var RequestHandler
      */
-    protected $dataTransRequest;
+    protected $requestHandler;
 
     /**
      * @param ValidatorInterface   $validator
      * @param ErrorHandler $ErrorHandler
      * @param Serializer   $Serializer
-     * @param DataTransRequest      $DataTransRequest
+     * @param RequestHandler      $RequestHandler
      */
     public function __construct(
         ValidatorInterface $validator,
         ErrorHandler $ErrorHandler,
         Serializer $Serializer,
-        DataTransRequest $DataTransRequest
+        RequestHandler $RequestHandler
 
     ) {
         $this->validator = $validator;
         $this->errorHandler = $ErrorHandler;
         $this->serializer = $Serializer;
-        $this->dataTransRequest = $DataTransRequest;
+        $this->requestHandler = $RequestHandler;
     }
 
     /**
@@ -67,7 +67,7 @@ class Authorization
 
         $serializedAuthorizationRequest = $this->serializer->serializeToQuery($authorizationRequest);
 
-        $response = $this->dataTransRequest->request(
+        $response = $this->requestHandler->request(
             Request::METHOD_GET,
             Constants::URL_AUTHORIZATION . '?' . $serializedAuthorizationRequest,
             null,
