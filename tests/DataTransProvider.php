@@ -1,0 +1,91 @@
+<?php
+
+namespace Ibrows\Tests\DataTrans;
+
+use Buzz\Browser;
+use Buzz\Client\FileGetContents;
+use Buzz\Util\CookieJar;
+use Ibrows\DataTrans\Api\Authorization\Authorization;
+use Ibrows\DataTrans\Error\SaferpayErrorHandler;
+use Ibrows\DataTrans\SaferpayRequest;
+use Ibrows\DataTrans\Api\SecureCardData\Add\AddSecureCard;
+use Ibrows\DataTrans\Serializer\SaferpaySerializer;
+use Pimple\Container;
+use Pimple\ServiceProviderInterface;
+use Saxulum\HttpClient\Buzz\HttpClient;
+use Symfony\Component\Form\Extension\Validator\ValidatorExtension;
+use Symfony\Component\Form\Forms;
+use Symfony\Component\Validator\Validation;
+
+class DataTransProvider implements ServiceProviderInterface
+{
+    /**
+     * @param Container $pimple
+     */
+    public function register(Container $pimple)
+    {
+        $pimple['datatrans_validator'] = function () use ($pimple) {
+             return Validation::createValidatorBuilder()
+                 ->addMethodMapping('loadValidatorMetadata')
+                 ->getValidator()
+             ;
+        };
+
+        $pimple['datatrans_form_factory'] = function () use ($pimple) {
+            return Forms::createFormFactoryBuilder()
+                ->addExtensions(array(
+                    new ValidatorExtension($pimple['datatrans_validator'])
+                ))
+                ->getFormFactory()
+            ;
+        };
+
+        $pimple['datatrans_error_handler'] = function () use ($pimple) {
+            return new SaferpayErrorHandler($pimple['datatrans_logger']);
+        };
+
+        $pimple['datatrans_serializer'] = function () use ($pimple) {
+            return new SaferpaySerializer($pimple['datatrans_error_handler']);
+        };
+
+        $pimple['datatrans_request'] = function () use ($pimple) {
+            return new SaferpayRequest(
+                new HttpClient(),
+                $pimple['datatrans_error_handler']
+            );
+        };
+
+        $pimple['datatrans_request_noredirect'] = function () use ($pimple) {
+            $buzzClient = new FileGetContents(new CookieJar());
+            $buzzClient->setMaxRedirects(0);
+            $httpClient = new HttpClient(new Browser($buzzClient));
+
+            return new SaferpayRequest(
+                $httpClient,
+                $pimple['datatrans_error_handler']
+            );
+        };
+
+        $pimple['datatrans_logger'] = function () use ($pimple) {
+            return new Logger();
+        };
+
+        $pimple['datatrans_addsecurecard'] = function () use ($pimple) {
+            return new AddSecureCard(
+                $pimple['datatrans_validator'],
+                $pimple['datatrans_error_handler'],
+                $pimple['datatrans_serializer'],
+                $pimple['datatrans_request']
+            );
+        };
+
+        $pimple['datatrans_authorization'] = function () use ($pimple) {
+            return new Authorization(
+                $pimple['datatrans_validator'],
+                $pimple['datatrans_error_handler'],
+                $pimple['datatrans_serializer'],
+                $pimple['datatrans_request']
+            );
+        };
+    }
+}
