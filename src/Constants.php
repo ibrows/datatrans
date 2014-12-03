@@ -66,11 +66,11 @@ class Constants
     const TEST_MERCHANTID = '1000011011';
     const TEST_AMOUNT = '1000';
     const TEST_CURRENCY = 'CHF';
-
-    const TEST_CARD1_TYPE = self::PAYMENTMETHOD_VISA;
-    const TEST_CARD1_NUMBER = '4242424242424242';
-    const TEST_CARD1_EXPM = '12';
-    const TEST_CARD1_EXPY = '15';
-    const TEST_CARD1_CVV = '123';
-    const TEST_CARD1_COUNTRY = 'CHE';
+    const TEST_REFNO = '91115';
+    const TEST_PAYMENTMETHOD = self::PAYMENTMETHOD_VISA;
+    const TEST_CARDNUMBER = '4242424242424242';
+    const TEST_EXPM = '12';
+    const TEST_EXPY = '15';
+    const TEST_CVV = '123';
+    const TEST_SIGN = '30916165706580013';
 }

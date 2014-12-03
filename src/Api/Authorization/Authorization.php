@@ -68,13 +68,11 @@ class Authorization
         $serializedAuthorizationRequest = $this->serializer->serializeToQuery($authorizationRequest);
 
         $response = $this->requestHandler->request(
-            Request::METHOD_GET,
-            Constants::URL_AUTHORIZATION . '?' . $serializedAuthorizationRequest,
-            null,
+            Request::METHOD_POST,
+            Constants::URL_AUTHORIZATION,
+            $serializedAuthorizationRequest,
             array(),
             $history
         );
-
-        var_dump($response);
     }
 }

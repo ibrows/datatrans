@@ -10,9 +10,9 @@ use Ibrows\Tests\DataTrans\DataTransProvider;
 use Pimple\Container;
 use Saxulum\HttpClient\History;
 
-class CreditCardTest extends \PHPUnit_Framework_TestCase
+class HiddenAuthorizationTest extends \PHPUnit_Framework_TestCase
 {
-    public function testPayWithCreditCard()
+    public function testAuthorization()
     {
         $container = new Container();
         $container->register(new DataTransProvider());
@@ -23,20 +23,29 @@ class CreditCardTest extends \PHPUnit_Framework_TestCase
         /** @var ErrorHandler $errorHandler */
         $errorHandler = $container['datatrans_error_handler'];
 
-        $later = new \DateTime('+6 months');
-
-        $orderId = \Dominikzogg\ClassHelpers\objectId();
-
         $history = new History();
 
         try {
             $dataTransAuthorization->authorizationRequest(HiddenAuthorizationRequest::getInstance(
                 Constants::TEST_MERCHANTID,
                 Constants::TEST_AMOUNT,
-                Constants::TEST_CURRENCY
+                Constants::TEST_CURRENCY,
+                Constants::TEST_REFNO,
+                null,
+                'https://localhost/success',
+                'https://localhost/error',
+                'https://localhost/cancel',
+                Constants::TEST_PAYMENTMETHOD,
+                Constants::TEST_CARDNUMBER,
+                null,
+                Constants::TEST_EXPM,
+                Constants::TEST_EXPY,
+                Constants::TEST_CVV
             ), $history);
 
             $this->assertCount(0, $errorHandler->getAndCleanViolations());
+
+            print (string) $history;
         } catch (\Exception $e) {
             print (string) $history;
             throw $e;

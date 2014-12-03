@@ -217,7 +217,7 @@ abstract class AbstractAuthorizationRequest extends AbstractData
         $metadata->addPropertyConstraint('currency', new Regex(array('pattern' => Pattern::ALPHA)));
 
         $metadata->addPropertyConstraint('refNo', new NotBlank());
-        $metadata->addPropertyConstraint('refNo', new Length(array('min' => 18, 'max' => 18)));
+        $metadata->addPropertyConstraint('refNo', new Length(array('min' => 0, 'max' => 18)));
         $metadata->addPropertyConstraint('refNo', new Regex(array('pattern' => Pattern::ALPHA_NUMERIC)));
     }
 
