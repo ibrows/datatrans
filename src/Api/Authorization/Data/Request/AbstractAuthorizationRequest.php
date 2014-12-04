@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Regex;
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\Validator\ExecutionContextInterface;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 
 abstract class AbstractAuthorizationRequest extends AbstractData
