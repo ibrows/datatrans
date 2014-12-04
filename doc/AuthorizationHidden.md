@@ -68,7 +68,7 @@ die();
 $queryParams = array();
 parse_str(parse_url($_SERVER['REQUEST_URI'], $queryParams);
 
-$successAuthorizationResponse = $dataTransAuthorization->parseSuccessAuthorizationResponse($queryParams);
+$successAuthorizationResponse = $authorization->parseSuccessAuthorizationResponse($queryParams);
 ```
 
 ### Handle fail response
@@ -77,7 +77,7 @@ $successAuthorizationResponse = $dataTransAuthorization->parseSuccessAuthorizati
 $queryParams = array();
 parse_str(parse_url($_SERVER['REQUEST_URI'], $queryParams);
 
-$failedAuthorizationResponse = $dataTransAuthorization->parseFailedAuthorizationResponse($queryParams);
+$failedAuthorizationResponse = $authorization->parseFailedAuthorizationResponse($queryParams);
 ```
 
 ### Handle cancel response
@@ -86,5 +86,5 @@ $failedAuthorizationResponse = $dataTransAuthorization->parseFailedAuthorization
 $queryParams = array();
 parse_str(parse_url($_SERVER['REQUEST_URI'], $queryParams);
 
-$cancelAuthorizationResponse = $dataTransAuthorization->parseCancelAuthorizationResponse($queryParams);
+$cancelAuthorizationResponse = $authorization->parseCancelAuthorizationResponse($queryParams);
 ```

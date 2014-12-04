@@ -15,7 +15,7 @@ $authorization = new Authorization(
 ### Prepare authorization request
 
 ``` {.php}
-$hiddenAuthorizationRequest = StandardAuthorizationRequest::getInstance(
+$standardAuthorizationRequest = StandardAuthorizationRequest::getInstance(
     TestDataInterface::MERCHANTID,
     TestDataInterface::AMOUNT,
     TestDataInterface::CURRENCY,
@@ -25,22 +25,22 @@ $hiddenAuthorizationRequest = StandardAuthorizationRequest::getInstance(
     TestDataInterface::URL_CANCEL
 );
 
-$hiddenAuthorizationRequest->setUppWebResponseMethod(DataInterface::RESPONSEMETHOD_GET);
-$hiddenAuthorizationRequest->setUppCustomerDetails(DataInterface::CUSTOMERDETAIL_TRUE);
-$hiddenAuthorizationRequest->setUppCustomerFirstName(TestDataInterface::CUSTOMER_FIRSTNAME);
-$hiddenAuthorizationRequest->setUppCustomerLastName(TestDataInterface::CUSTOMER_LASTNAME);
-$hiddenAuthorizationRequest->setUppCustomerStreet(TestDataInterface::CUSTOMER_STREET);
-$hiddenAuthorizationRequest->setUppCustomerCity(TestDataInterface::CUSTOMER_CITY);
-$hiddenAuthorizationRequest->setUppCustomerZipCode(TestDataInterface::CUSTOMER_ZIPCODE);
-$hiddenAuthorizationRequest->setUppCustomerCountry(TestDataInterface::CUSTOMER_COUNTRY);
-$hiddenAuthorizationRequest->setUppCustomerEmail(TestDataInterface::CUSTOMER_EMAIL);
-$hiddenAuthorizationRequest->setUppCustomerLanguage(TestDataInterface::CUSTOMER_LANGUAGE);
+$standardAuthorizationRequest->setUppWebResponseMethod(DataInterface::RESPONSEMETHOD_GET);
+$standardAuthorizationRequest->setUppCustomerDetails(DataInterface::CUSTOMERDETAIL_TRUE);
+$standardAuthorizationRequest->setUppCustomerFirstName(TestDataInterface::CUSTOMER_FIRSTNAME);
+$standardAuthorizationRequest->setUppCustomerLastName(TestDataInterface::CUSTOMER_LASTNAME);
+$standardAuthorizationRequest->setUppCustomerStreet(TestDataInterface::CUSTOMER_STREET);
+$standardAuthorizationRequest->setUppCustomerCity(TestDataInterface::CUSTOMER_CITY);
+$standardAuthorizationRequest->setUppCustomerZipCode(TestDataInterface::CUSTOMER_ZIPCODE);
+$standardAuthorizationRequest->setUppCustomerCountry(TestDataInterface::CUSTOMER_COUNTRY);
+$standardAuthorizationRequest->setUppCustomerEmail(TestDataInterface::CUSTOMER_EMAIL);
+$standardAuthorizationRequest->setUppCustomerLanguage(TestDataInterface::CUSTOMER_LANGUAGE);
 ```
 
 ### Get authorization request data
 
 ``` {.php}
-$authorizationRequestData = $authorization->buildAuthorizationRequestData($hiddenAuthorizationRequest);
+$authorizationRequestData = $authorization->buildAuthorizationRequestData($standardAuthorizationRequest);
 ```
 
 ### Build url
@@ -62,7 +62,7 @@ die();
 $queryParams = array();
 parse_str(parse_url($_SERVER['REQUEST_URI'], $queryParams);
 
-$successAuthorizationResponse = $dataTransAuthorization->parseSuccessAuthorizationResponse($queryParams);
+$successAuthorizationResponse = $authorization->parseSuccessAuthorizationResponse($queryParams);
 ```
 
 ### Handle fail response
@@ -71,7 +71,7 @@ $successAuthorizationResponse = $dataTransAuthorization->parseSuccessAuthorizati
 $queryParams = array();
 parse_str(parse_url($_SERVER['REQUEST_URI'], $queryParams);
 
-$failedAuthorizationResponse = $dataTransAuthorization->parseFailedAuthorizationResponse($queryParams);
+$failedAuthorizationResponse = $authorization->parseFailedAuthorizationResponse($queryParams);
 ```
 
 ### Handle cancel response
@@ -80,5 +80,5 @@ $failedAuthorizationResponse = $dataTransAuthorization->parseFailedAuthorization
 $queryParams = array();
 parse_str(parse_url($_SERVER['REQUEST_URI'], $queryParams);
 
-$cancelAuthorizationResponse = $dataTransAuthorization->parseCancelAuthorizationResponse($queryParams);
+$cancelAuthorizationResponse = $authorization->parseCancelAuthorizationResponse($queryParams);
 ```
