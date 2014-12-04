@@ -9,14 +9,14 @@ class Serializer
     /**
      * @var ErrorHandler
      */
-    protected $saferpayErrorHandler;
+    protected $errorHandler;
 
     /**
-     * @param ErrorHandler $saferpayErrorHandler
+     * @param ErrorHandler $errorHandler
      */
-    public function __construct(ErrorHandler $saferpayErrorHandler)
+    public function __construct(ErrorHandler $errorHandler)
     {
-        $this->saferpayErrorHandler = $saferpayErrorHandler;
+        $this->errorHandler = $errorHandler;
     }
 
     /**
@@ -26,7 +26,7 @@ class Serializer
      */
     public function serializeToArray(MappingInterface $object)
     {
-        $object->validateMappingConfiguration($this->saferpayErrorHandler);
+        $object->validateMappingConfiguration($this->errorHandler);
 
         return $object->getMappedData();
     }
@@ -37,7 +37,7 @@ class Serializer
      */
     public function unserializeFromArray(MappingInterface $object, array $data)
     {
-        $object->validateMappingConfiguration($this->saferpayErrorHandler);
+        $object->validateMappingConfiguration($this->errorHandler);
         $object->setMappedData($data);
     }
 }
