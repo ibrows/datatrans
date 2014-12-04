@@ -30,31 +30,31 @@ class HiddenAuthorizationTest extends \PHPUnit_Framework_TestCase
         $httpClient = $container['datatrans_httpclient'];
 
         $hiddenAuthorizationRequest = HiddenAuthorizationRequest::getInstance(
-            TestDataInterface::TEST_MERCHANTID,
-            TestDataInterface::TEST_AMOUNT,
-            TestDataInterface::TEST_CURRENCY,
-            TestDataInterface::TEST_REFNO,
-            TestDataInterface::TEST_URL_SUCCESS,
-            TestDataInterface::TEST_URL_FAILED,
-            TestDataInterface::TEST_URL_CANCEL
+            TestDataInterface::MERCHANTID,
+            TestDataInterface::AMOUNT,
+            TestDataInterface::CURRENCY,
+            TestDataInterface::REFNO,
+            TestDataInterface::URL_SUCCESS,
+            TestDataInterface::URL_FAILED,
+            TestDataInterface::URL_CANCEL
         );
 
-        $hiddenAuthorizationRequest->setPaymentMethod(TestDataInterface::TEST_PAYMENTMETHOD);
-        $hiddenAuthorizationRequest->setCardNo(TestDataInterface::TEST_CARDNUMBER);
-        $hiddenAuthorizationRequest->setExpm(TestDataInterface::TEST_EXPM);
-        $hiddenAuthorizationRequest->setExpy(TestDataInterface::TEST_EXPY);
-        $hiddenAuthorizationRequest->setCvv(TestDataInterface::TEST_CVV);
+        $hiddenAuthorizationRequest->setPaymentMethod(TestDataInterface::PAYMENTMETHOD);
+        $hiddenAuthorizationRequest->setCardNo(TestDataInterface::CARDNUMBER);
+        $hiddenAuthorizationRequest->setExpm(TestDataInterface::EXPM);
+        $hiddenAuthorizationRequest->setExpy(TestDataInterface::EXPY);
+        $hiddenAuthorizationRequest->setCvv(TestDataInterface::CVV);
 
         $hiddenAuthorizationRequest->setUppWebResponseMethod(DataInterface::RESPONSEMETHOD_GET);
         $hiddenAuthorizationRequest->setUppCustomerDetails(DataInterface::CUSTOMERDETAIL_TRUE);
-        $hiddenAuthorizationRequest->setUppCustomerFirstName(TestDataInterface::TEST_CUSTOMER_FIRSTNAME);
-        $hiddenAuthorizationRequest->setUppCustomerLastName(TestDataInterface::TEST_CUSTOMER_LASTNAME);
-        $hiddenAuthorizationRequest->setUppCustomerStreet(TestDataInterface::TEST_CUSTOMER_STREET);
-        $hiddenAuthorizationRequest->setUppCustomerCity(TestDataInterface::TEST_CUSTOMER_CITY);
-        $hiddenAuthorizationRequest->setUppCustomerZipCode(TestDataInterface::TEST_CUSTOMER_ZIPCODE);
-        $hiddenAuthorizationRequest->setUppCustomerCountry(TestDataInterface::TEST_CUSTOMER_COUNTRY);
-        $hiddenAuthorizationRequest->setUppCustomerEmail(TestDataInterface::TEST_CUSTOMER_EMAIL);
-        $hiddenAuthorizationRequest->setUppCustomerLanguage(TestDataInterface::TEST_CUSTOMER_LANGUAGE);
+        $hiddenAuthorizationRequest->setUppCustomerFirstName(TestDataInterface::CUSTOMER_FIRSTNAME);
+        $hiddenAuthorizationRequest->setUppCustomerLastName(TestDataInterface::CUSTOMER_LASTNAME);
+        $hiddenAuthorizationRequest->setUppCustomerStreet(TestDataInterface::CUSTOMER_STREET);
+        $hiddenAuthorizationRequest->setUppCustomerCity(TestDataInterface::CUSTOMER_CITY);
+        $hiddenAuthorizationRequest->setUppCustomerZipCode(TestDataInterface::CUSTOMER_ZIPCODE);
+        $hiddenAuthorizationRequest->setUppCustomerCountry(TestDataInterface::CUSTOMER_COUNTRY);
+        $hiddenAuthorizationRequest->setUppCustomerEmail(TestDataInterface::CUSTOMER_EMAIL);
+        $hiddenAuthorizationRequest->setUppCustomerLanguage(TestDataInterface::CUSTOMER_LANGUAGE);
 
         $authorizationRequestData = $authorization->buildAuthorizationRequestData($hiddenAuthorizationRequest);
 
@@ -89,7 +89,7 @@ class HiddenAuthorizationTest extends \PHPUnit_Framework_TestCase
         $errorHandler = $container['datatrans_error_handler'];
 
         $queryParams = array();
-        parse_str(parse_url(TestDataInterface::TEST_RESPONSE_SUCCESS, PHP_URL_QUERY), $queryParams);
+        parse_str(parse_url(TestDataInterface::RESPONSE_SUCCESS, PHP_URL_QUERY), $queryParams);
 
         $successAuthorizationResponse = $dataTransAuthorization->parseSuccessAuthorizationResponse($queryParams);
 
@@ -103,7 +103,7 @@ class HiddenAuthorizationTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals('01', $successAuthorizationResponse->getResponseCode());
         $this->assertEquals('Authorized', $successAuthorizationResponse->getResponseMessage());
-        $this->assertEquals(TestDataInterface::TEST_PAYMENTMETHOD, $successAuthorizationResponse->getPMethod());
+        $this->assertEquals(TestDataInterface::PAYMENTMETHOD, $successAuthorizationResponse->getPMethod());
         $this->assertEquals(null, $successAuthorizationResponse->getReqType());
         $this->assertEquals('110832', $successAuthorizationResponse->getAcqAuthorizationCode());
         $this->assertEquals(null, $successAuthorizationResponse->getAliasCC());
@@ -111,9 +111,9 @@ class HiddenAuthorizationTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(null, $successAuthorizationResponse->getSign2());
         $this->assertEquals(null, $successAuthorizationResponse->getVirtualCardNo());
         $this->assertEquals('141204110831522029', $successAuthorizationResponse->getUppTransactionId());
-        $this->assertEquals(TestDataInterface::TEST_REFNO, $successAuthorizationResponse->getRefNo());
-        $this->assertEquals(TestDataInterface::TEST_AMOUNT, $successAuthorizationResponse->getAmount());
-        $this->assertEquals(TestDataInterface::TEST_CURRENCY, $successAuthorizationResponse->getCurrency());
+        $this->assertEquals(TestDataInterface::REFNO, $successAuthorizationResponse->getRefNo());
+        $this->assertEquals(TestDataInterface::AMOUNT, $successAuthorizationResponse->getAmount());
+        $this->assertEquals(TestDataInterface::CURRENCY, $successAuthorizationResponse->getCurrency());
         $this->assertEquals('success', $successAuthorizationResponse->getStatus());
         $this->assertEquals(DataInterface::MSGTYPE_GET, $successAuthorizationResponse->getUppMsgType());
     }
@@ -130,7 +130,7 @@ class HiddenAuthorizationTest extends \PHPUnit_Framework_TestCase
         $errorHandler = $container['datatrans_error_handler'];
 
         $queryParams = array();
-        parse_str(parse_url(TestDataInterface::TEST_RESPONSE_FAILED, PHP_URL_QUERY), $queryParams);
+        parse_str(parse_url(TestDataInterface::RESPONSE_FAILED, PHP_URL_QUERY), $queryParams);
 
         $failedAuthorizationResponse = $dataTransAuthorization->parseFailedAuthorizationResponse($queryParams);
 
@@ -149,9 +149,9 @@ class HiddenAuthorizationTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(null, $failedAuthorizationResponse->getReqType());
         $this->assertEquals(null, $failedAuthorizationResponse->getAcqErrorCode());
         $this->assertEquals('141204131558314439', $failedAuthorizationResponse->getUppTransactionId());
-        $this->assertEquals(TestDataInterface::TEST_REFNO, $failedAuthorizationResponse->getRefNo());
-        $this->assertEquals(TestDataInterface::TEST_AMOUNT, $failedAuthorizationResponse->getAmount());
-        $this->assertEquals(TestDataInterface::TEST_CURRENCY, $failedAuthorizationResponse->getCurrency());
+        $this->assertEquals(TestDataInterface::REFNO, $failedAuthorizationResponse->getRefNo());
+        $this->assertEquals(TestDataInterface::AMOUNT, $failedAuthorizationResponse->getAmount());
+        $this->assertEquals(TestDataInterface::CURRENCY, $failedAuthorizationResponse->getCurrency());
         $this->assertEquals('error', $failedAuthorizationResponse->getStatus());
         $this->assertEquals(DataInterface::MSGTYPE_GET, $failedAuthorizationResponse->getUppMsgType());
     }
