@@ -11,8 +11,7 @@ use Ibrows\DataTrans\Error\ErrorHandler;
 use Psr\Log\NullLogger;
 use Symfony\Component\Validator\Validation;
 
-$logger = new Logger();
-$errorHandler = new ErrorHandler($logger);
+$errorHandler = new ErrorHandler(new Logger());
 $serializer = new Serializer($errorHandler);
 $validator = Validation::createValidatorBuilder()
   ->addMethodMapping('loadValidatorMetadata')
