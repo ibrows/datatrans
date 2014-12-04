@@ -61,3 +61,30 @@ $url = DataInterface::URL_AUTHORIZATION . '?' . http_build_query($authorizationR
 header('Location: ' . $url);
 die();
 ```
+
+### Handle success response
+
+``` {.php}
+$queryParams = array();
+parse_str(parse_url($_SERVER['REQUEST_URI'], $queryParams);
+
+$successAuthorizationResponse = $dataTransAuthorization->parseSuccessAuthorizationResponse($queryParams);
+```
+
+### Handle fail response
+
+``` {.php}
+$queryParams = array();
+parse_str(parse_url($_SERVER['REQUEST_URI'], $queryParams);
+
+$failedAuthorizationResponse = $dataTransAuthorization->parseFailedAuthorizationResponse($queryParams);
+```
+
+### Handle cancel response
+
+``` {.php}
+$queryParams = array();
+parse_str(parse_url($_SERVER['REQUEST_URI'], $queryParams);
+
+$cancelAuthorizationResponse = $dataTransAuthorization->parseCancelAuthorizationResponse($queryParams);
+```
