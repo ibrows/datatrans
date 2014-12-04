@@ -9,7 +9,7 @@ use Ibrows\DataTrans\Api\Authorization\Data\Response\FailedAuthorizationResponse
 use Ibrows\DataTrans\Api\Authorization\Data\Response\SuccessfulAuthorizationResponse;
 use Ibrows\DataTrans\Error\ErrorHandler;
 use Ibrows\DataTrans\Serializer\Serializer;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\Validator\ValidatorInterface;
 
 class Authorization
 {
