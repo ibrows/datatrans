@@ -8,10 +8,11 @@
 <?php
 
 use Ibrows\DataTrans\Error\ErrorHandler;
-use Ibrows\DataTrans\Validator\DataTransValidator;
 use Psr\Log\NullLogger;
+use Symfony\Component\Validator\Validation;
 
-$errorHandler = new ErrorHandler(new Logger());
+$logger = new Logger();
+$errorHandler = new ErrorHandler($logger);
 $serializer = new Serializer($errorHandler);
 $validator = Validation::createValidatorBuilder()
   ->addMethodMapping('loadValidatorMetadata')

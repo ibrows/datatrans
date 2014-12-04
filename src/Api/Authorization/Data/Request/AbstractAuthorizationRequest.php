@@ -199,10 +199,10 @@ abstract class AbstractAuthorizationRequest extends AbstractData
      * @param string $amount
      * @param string $currency
      * @param string $refNo
-     * @param string $sign
      * @param string $successUrl
      * @param string $errorUrl
      * @param string $cancelUrl
+     * @param string $sign
      * @return static
      */
     public static function getInstance(
@@ -210,10 +210,10 @@ abstract class AbstractAuthorizationRequest extends AbstractData
         $amount,
         $currency,
         $refNo,
-        $sign,
         $successUrl,
         $errorUrl,
-        $cancelUrl
+        $cancelUrl,
+        $sign = null
     ) {
         $instance = new static();
 
@@ -221,10 +221,10 @@ abstract class AbstractAuthorizationRequest extends AbstractData
         $instance->setAmount($amount);
         $instance->setCurrency($currency);
         $instance->setRefNo($refNo);
-        $instance->setSign($sign);
         $instance->setSuccessUrl($successUrl);
         $instance->setErrorUrl($errorUrl);
         $instance->setCancelUrl($cancelUrl);
+        $instance->setSign($sign);
 
         return $instance;
     }

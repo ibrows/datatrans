@@ -20,7 +20,6 @@ $hiddenAuthorizationRequest = HiddenAuthorizationRequest::getInstance(
     TestDataInterface::TEST_AMOUNT,
     TestDataInterface::TEST_CURRENCY,
     TestDataInterface::TEST_REFNO,
-    null,
     TestDataInterface::TEST_URL_SUCCESS,
     TestDataInterface::TEST_URL_FAILED,
     TestDataInterface::TEST_URL_CANCEL
