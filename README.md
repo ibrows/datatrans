@@ -22,6 +22,8 @@ $validator = Validation::createValidatorBuilder()
 
 ## Usage
 
- * [AuthorizationHidden][1]
+ * [Authorization][1]
+ * [AuthorizationHidden][2]
 
-[1]: https://ibrows.codebasehq.com/projects/ibrowsch/repositories/datatrans/blob/master/doc/AuthorizationHidden.md
+[1]: https://ibrows.codebasehq.com/projects/ibrowsch/repositories/datatrans/blob/master/doc/Authorization.md
+[2]: https://ibrows.codebasehq.com/projects/ibrowsch/repositories/datatrans/blob/master/doc/AuthorizationHidden.md
