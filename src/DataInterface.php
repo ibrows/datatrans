@@ -2,7 +2,7 @@
 
 namespace Ibrows\DataTrans;
 
-class Constants
+interface DataInterface
 {
     const version = '8.41';
 
@@ -15,6 +15,26 @@ class Constants
 
     const MSGTYPE_GET = 'web';
     const MSGTYPE_POST = 'post';
+
+    const BOOL_TRUE = 'yes';
+    const BOOL_FALSE = 'no';
+    const BOOL_AUTO = 'auto';
+
+    const REQTYPE_AUTHORIZATIONONLY = 'NOA';
+    const REQTYPE_AUTHORIZATIONWITHIMMEDIATESETTLEMENT = 'CAA';
+
+    const RESPONSEMETHOD_GET = 'GET';
+    const RESPONSEMETHOD_POST = 'POST';
+
+    const STATUS_ENABLED = 'on';
+    const STATUS_DISABLED = 'off';
+
+    const CUSTOMERDETAIL_TRUE = 'yes';
+    const CUSTOMERDETAIL_FALSE = 'no';
+    const CUSTOMERDETAIL_RETURN = 'return';
+
+    const GENDER_MALE = 'male';
+    const GENDER_FEMALE = 'female';
 
     const PAYMENTMETHOD_VISA = 'VIS';
     const PAYMENTMETHOD_MASTERCARD = 'ECA';
@@ -62,15 +82,4 @@ class Constants
     const MONTH_OCTOBER = '10';
     const MONTH_NOVEMBER = '11';
     const MONTH_DECEMBER = '12';
-
-    const TEST_MERCHANTID = '1000011011';
-    const TEST_AMOUNT = '1000';
-    const TEST_CURRENCY = 'CHF';
-    const TEST_REFNO = '91115';
-    const TEST_PAYMENTMETHOD = self::PAYMENTMETHOD_VISA;
-    const TEST_CARDNUMBER = '4242424242424242';
-    const TEST_EXPM = '12';
-    const TEST_EXPY = '15';
-    const TEST_CVV = '123';
-    const TEST_SIGN = '30916165706580013';
 }

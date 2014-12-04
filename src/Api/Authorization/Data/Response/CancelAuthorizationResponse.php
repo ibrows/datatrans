@@ -2,7 +2,7 @@
 
 namespace Ibrows\DataTrans\Api\Authorization\Data\Response;
 
-use Ibrows\DataTrans\Constants;
+use Ibrows\DataTrans\DataInterface;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class CancelAuthorizationResponse extends AbstractAuthorizationResponse
@@ -14,7 +14,7 @@ class CancelAuthorizationResponse extends AbstractAuthorizationResponse
     {
         $uppMsgType = $this->getUppMsgType();
 
-        if(Constants::MSGTYPE_GET !== $uppMsgType) {
+        if (self::MSGTYPE_GET !== $uppMsgType) {
             $context->addViolationAt('status', "Invalid uppMsgType '{$uppMsgType}' given!");
         }
     }

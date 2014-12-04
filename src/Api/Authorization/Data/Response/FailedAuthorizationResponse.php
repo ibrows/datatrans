@@ -4,6 +4,7 @@ namespace Ibrows\DataTrans\Api\Authorization\Data\Response;
 
 use Ibrows\DataTrans\Pattern;
 use Ibrows\DataTrans\Serializer\MappingConfiguration;
+use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Regex;
@@ -157,8 +158,20 @@ class FailedAuthorizationResponse extends AbstractAuthorizationResponse
     {
         $uppMsgType = $this->getUppMsgType();
 
-        if (!in_array($uppMsgType, array_keys(\Dominikzogg\ClassHelpers\getConstantsWithPrefix('Ibrows\DataTrans\Constants', 'MSGTYPE_')))) {
+        if (!in_array($uppMsgType, array_keys(\Dominikzogg\ClassHelpers\getConstantsWithPrefix(__CLASS__, 'MSGTYPE_')))) {
             $context->addViolationAt('status', "Unknown uppMsgType '{$uppMsgType}' given!");
+        }
+    }
+
+    /**
+     * @param ExecutionContextInterface $context
+     */
+    public function isValidReqType(ExecutionContextInterface $context)
+    {
+        $reqType = $this->getReqType();
+
+        if (!in_array($reqType, array_keys(\Dominikzogg\ClassHelpers\getConstantsWithPrefix(__CLASS__, 'REQTYPE_')))) {
+            $context->addViolationAt('status', "Unknown reqType '{$reqType}' given!");
         }
     }
 
@@ -182,8 +195,9 @@ class FailedAuthorizationResponse extends AbstractAuthorizationResponse
         $metadata->addPropertyConstraint('pMethod', new Regex(array('pattern' => Pattern::ALPHA)));
 
         $metadata->addPropertyConstraint('reqType', new NotBlank());
-        $metadata->addPropertyConstraint('reqType', new Length(array('min' => 3, 'max' => 3)));
-        $metadata->addPropertyConstraint('reqType', new Regex(array('pattern' => Pattern::ALPHA)));
+        $metadata->addConstraint(new Callback(array(
+            'methods' => array('isValidReqType'),
+        )));
 
         $metadata->addPropertyConstraint('acqErrorCode', new NotBlank());
         $metadata->addPropertyConstraint('acqErrorCode', new Regex(array('pattern' => Pattern::NUMERIC)));

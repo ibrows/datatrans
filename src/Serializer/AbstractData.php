@@ -2,10 +2,11 @@
 
 namespace Ibrows\DataTrans\Serializer;
 
+use Ibrows\DataTrans\DataInterface;
 use Ibrows\DataTrans\Error\ErrorHandler;
 use Ibrows\DataTrans\Error\SerializeException;
 
-abstract class AbstractData implements MappingInterface
+abstract class AbstractData implements MappingInterface, DataInterface
 {
     /**
      * @return MappingConfiguration[]

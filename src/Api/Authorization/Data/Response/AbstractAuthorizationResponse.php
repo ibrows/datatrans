@@ -159,7 +159,7 @@ abstract class AbstractAuthorizationResponse extends AbstractData
     {
         $status = $this->getStatus();
 
-        if (!in_array($status, array_keys(\Dominikzogg\ClassHelpers\getConstantsWithPrefix('Ibrows\DataTrans\Constants', 'STATUS_')))) {
+        if (!in_array($status, array_keys(\Dominikzogg\ClassHelpers\getConstantsWithPrefix(__CLASS__, 'STATUS_')))) {
             $context->addViolationAt('status', "Unknown status '{$status}' given!");
         }
     }

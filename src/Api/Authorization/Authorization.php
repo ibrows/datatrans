@@ -3,10 +3,12 @@
 namespace Ibrows\DataTrans\Api\Authorization;
 
 use Ibrows\DataTrans\Api\Authorization\Data\Request\AbstractAuthorizationRequest;
-use Ibrows\DataTrans\Constants;
-use Ibrows\DataTrans\RequestHandler;
+use Ibrows\DataTrans\Api\Authorization\Data\Response\AbstractAuthorizationResponse;
+use Ibrows\DataTrans\Api\Authorization\Data\Response\CancelAuthorizationResponse;
+use Ibrows\DataTrans\Api\Authorization\Data\Response\FailedAuthorizationResponse;
+use Ibrows\DataTrans\Api\Authorization\Data\Response\SuccessfulAuthorizationResponse;
+use Ibrows\DataTrans\DataInterface;
 use Ibrows\DataTrans\Error\ErrorHandler;
-use Ibrows\DataTrans\Error\ResponseException;
 use Ibrows\DataTrans\Serializer\Serializer;
 use Saxulum\HttpClient\History;
 use Saxulum\HttpClient\Request;
@@ -31,48 +33,74 @@ class Authorization
     protected $serializer;
 
     /**
-     * @var RequestHandler
-     */
-    protected $requestHandler;
-
-    /**
      * @param ValidatorInterface   $validator
      * @param ErrorHandler $ErrorHandler
      * @param Serializer   $Serializer
-     * @param RequestHandler      $RequestHandler
      */
     public function __construct(
         ValidatorInterface $validator,
         ErrorHandler $ErrorHandler,
-        Serializer $Serializer,
-        RequestHandler $RequestHandler
-
+        Serializer $Serializer
     ) {
         $this->validator = $validator;
         $this->errorHandler = $ErrorHandler;
         $this->serializer = $Serializer;
-        $this->requestHandler = $RequestHandler;
     }
 
     /**
      * @param  AbstractAuthorizationRequest           $authorizationRequest
-     * @param  History                   $history
-     * @return Response
-     * @throws ResponseException
+     * @return Request
      */
-    public function authorizationRequest(AbstractAuthorizationRequest $authorizationRequest, History $history = null)
+    public function buildAuthorizationRequest(AbstractAuthorizationRequest $authorizationRequest)
     {
         $violations = $this->validator->validate($authorizationRequest);
         $this->errorHandler->violations($violations);
 
         $serializedAuthorizationRequest = $this->serializer->serializeToQuery($authorizationRequest);
 
-        $response = $this->requestHandler->request(
-            Request::METHOD_POST,
-            Constants::URL_AUTHORIZATION,
-            $serializedAuthorizationRequest,
-            array(),
-            $history
+        return new Request(
+            '1.1',
+            Request::METHOD_GET,
+            DataInterface::URL_AUTHORIZATION . '?' . $serializedAuthorizationRequest
         );
+    }
+
+    /**
+     * @param array $data
+     * @return SuccessfulAuthorizationResponse
+     */
+    public function parseSuccessAuthorizationResponse(array $data)
+    {
+        return $this->parseAuthorizationResponse(new SuccessfulAuthorizationResponse(), $data);
+    }
+
+    /**
+     * @param array $data
+     * @return FailedAuthorizationResponse
+     */
+    public function parseFailedAuthorizationResponse(array $data)
+    {
+        return $this->parseAuthorizationResponse(new FailedAuthorizationResponse(), $data);
+    }
+
+    /**
+     * @param array $data
+     * @return CancelAuthorizationResponse
+     */
+    public function parseCancelAuthorizationResponse(array $data)
+    {
+        return $this->parseAuthorizationResponse(new CancelAuthorizationResponse(), $data);
+    }
+
+    /**
+     * @param AbstractAuthorizationResponse $authorizationResponse
+     * @param array                         $data
+     * @return AbstractAuthorizationResponse
+     */
+    protected function parseAuthorizationResponse(AbstractAuthorizationResponse $authorizationResponse, array $data)
+    {
+        $this->serializer->unserializeArray($authorizationResponse, $data);
+
+        return $authorizationResponse;
     }
 }

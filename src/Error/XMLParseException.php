@@ -2,4 +2,6 @@
 
 namespace Ibrows\DataTrans\Error;
 
-class XMLParseException extends \Exception {}
+class XMLParseException extends \Exception
+{
+}

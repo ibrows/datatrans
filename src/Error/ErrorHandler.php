@@ -70,6 +70,10 @@ class ErrorHandler
      */
     public function mappingNotFoundPropertyName($class, $propertyName)
     {
+        if (is_object($class)) {
+            $class = get_class($class);
+        }
+
         $this->logger->critical(
             "DataTrans: there is no property with name '{propertyName}' on class {class}!", array(
                 'propertyName' => $propertyName,
@@ -92,6 +96,10 @@ class ErrorHandler
      */
     public function mappingDuplicatePropertyName($class, $propertyName)
     {
+        if (is_object($class)) {
+            $class = get_class($class);
+        }
+
         $this->logger->critical(
             "DataTrans: duplicate property with name '{propertyName}' within configuration on class {class}!", array(
                 'propertyName' => $propertyName,
@@ -114,6 +122,10 @@ class ErrorHandler
      */
     public function mappingDuplicateSerializedName($class, $serializeName)
     {
+        if (is_object($class)) {
+            $class = get_class($class);
+        }
+
         $this->logger->critical(
             "DataTrans: duplicate serialize name with name '{serializeName}' within configuration on class {class}!", array(
                 'serializeName' => $serializeName,

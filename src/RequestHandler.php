@@ -7,6 +7,7 @@ use Ibrows\DataTrans\Error\ErrorHandler;
 use Saxulum\HttpClient\HistoryEntry;
 use Saxulum\HttpClient\HttpClientInterface;
 use Saxulum\HttpClient\Request;
+use Saxulum\HttpClient\Response;
 
 class RequestHandler
 {
@@ -30,12 +31,26 @@ class RequestHandler
     }
 
     /**
+     * @param Request $request
+     * @return Response
+     */
+    public function requestByRequestObject(Request $request)
+    {
+        return $this->request(
+            $request->getMethod(),
+            (string) $request->getUrl(),
+            $request->getContent(),
+            $request->getHeaders()
+        );
+    }
+
+    /**
      * @param $method
      * @param $url
      * @param  null                         $content
      * @param  array                        $headers
      * @param  History|null                 $history
-     * @return \Saxulum\HttpClient\Response
+     * @return Response
      * @throws \Exception
      */
     public function request($method, $url, $content = null, $headers = array(), History $history = null)

@@ -31,4 +31,14 @@ class Serializer
 
         return http_build_query($data);
     }
+
+    /**
+     * @param MappingInterface $object
+     * @param array            $data
+     */
+    public function unserializeArray(MappingInterface $object, array $data)
+    {
+        $object->validateMappingConfiguration($this->saferpayErrorHandler);
+        $object->setMappedData($data);
+    }
 }

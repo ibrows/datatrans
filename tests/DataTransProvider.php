@@ -54,17 +54,6 @@ class DataTransProvider implements ServiceProviderInterface
             );
         };
 
-        $pimple['datatrans_request_noredirect'] = function () use ($pimple) {
-            $buzzClient = new FileGetContents(new CookieJar());
-            $buzzClient->setMaxRedirects(0);
-            $httpClient = new HttpClient(new Browser($buzzClient));
-
-            return new RequestHandler(
-                $httpClient,
-                $pimple['datatrans_error_handler']
-            );
-        };
-
         $pimple['datatrans_logger'] = function () use ($pimple) {
             return new Logger();
         };
@@ -73,8 +62,7 @@ class DataTransProvider implements ServiceProviderInterface
             return new Authorization(
                 $pimple['datatrans_validator'],
                 $pimple['datatrans_error_handler'],
-                $pimple['datatrans_serializer'],
-                $pimple['datatrans_request']
+                $pimple['datatrans_serializer']
             );
         };
     }

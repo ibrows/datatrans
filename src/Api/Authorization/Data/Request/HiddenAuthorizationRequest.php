@@ -41,7 +41,7 @@ class HiddenAuthorizationRequest extends AbstractAuthorizationRequest
     /**
      * @var string
      */
-    protected $hiddenMode = 'yes';
+    protected $hiddenMode = self::BOOL_TRUE;
 
     /**
      * @var string
@@ -234,7 +234,7 @@ class HiddenAuthorizationRequest extends AbstractAuthorizationRequest
     {
         $paymentMethod = $this->getPaymentMethod();
 
-        if (!in_array($paymentMethod, array_keys(\Dominikzogg\ClassHelpers\getConstantsWithPrefix('Ibrows\DataTrans\Constants', 'PAYMENTMETHOD_')))) {
+        if (!in_array($paymentMethod, array_keys(\Dominikzogg\ClassHelpers\getConstantsWithPrefix(__CLASS__, 'PAYMENTMETHOD_')))) {
             $context->addViolationAt('status', "Unknown paymentmethod '{$paymentMethod}' given!");
         }
     }
@@ -260,7 +260,7 @@ class HiddenAuthorizationRequest extends AbstractAuthorizationRequest
     {
         $expm = $this->getExpm();
 
-        if (!in_array($expm, array_keys(\Dominikzogg\ClassHelpers\getConstantsWithPrefix('Ibrows\DataTrans\Constants', 'MONTH_')))) {
+        if (!in_array($expm, array_keys(\Dominikzogg\ClassHelpers\getConstantsWithPrefix(__CLASS__, 'MONTH_')))) {
             $context->addViolationAt('status', "Unknown expm '{$expm}' given!");
         }
     }
@@ -274,7 +274,7 @@ class HiddenAuthorizationRequest extends AbstractAuthorizationRequest
 
         $now = new \DateTime();
         $years = array();
-        for($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 10; $i++) {
             $years[] = $now->format('y');
             $now->modify('+1year');
         }

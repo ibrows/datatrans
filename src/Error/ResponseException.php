@@ -2,4 +2,6 @@
 
 namespace Ibrows\DataTrans\Error;
 
-class ResponseException extends \Exception {}
+class ResponseException extends \Exception
+{
+}
