@@ -3,7 +3,6 @@
 namespace Ibrows\DataTrans\Error;
 
 use Psr\Log\LoggerInterface;
-use Saxulum\HttpClient\Response;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
@@ -138,36 +137,6 @@ class ErrorHandler
                 'serializeName' => $serializeName,
                 'class' => $class
             )
-        ));
-    }
-
-    /**
-     * @param $xml
-     * @throws XMLParseException
-     */
-    public function xmlParse($xml)
-    {
-        $this->logger->critical("DataTrans: xml '{xml}' is not parseable!", array(
-            'xml' => $xml
-        ));
-
-        throw new XMLParseException($this->prepareExceptionMessage(
-            "DataTrans: xml '{xml}' is not parseable!", array(
-                'xml' => $xml
-            )
-        ));
-    }
-
-    /**
-     * @param  Response                  $response
-     * @throws ResponseException
-     */
-    public function response(Response $response)
-    {
-        $this->logger->critical('DataTrans: request failed: {content}!', array('content' => $response->getContent()));
-
-        throw new ResponseException($this->prepareExceptionMessage(
-            'DataTrans: request failed: {content}!', array('content' => $response->getContent())
         ));
     }
 

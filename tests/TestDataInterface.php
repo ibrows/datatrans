@@ -16,6 +16,14 @@ interface TestDataInterface
     const TEST_EXPY = '15';
     const TEST_CVV = '123';
     const TEST_SIGN = '30916165706580013';
+    const TEST_CUSTOMER_FIRSTNAME = 'Max';
+    const TEST_CUSTOMER_LASTNAME = 'Mustermann';
+    const TEST_CUSTOMER_STREET = 'Musterstrasse 0';
+    const TEST_CUSTOMER_CITY = 'Musterort';
+    const TEST_CUSTOMER_ZIPCODE = '0000';
+    const TEST_CUSTOMER_COUNTRY = 'CHE';
+    const TEST_CUSTOMER_EMAIL = 'max.muster@maxmustermannag.ch';
+    const TEST_CUSTOMER_LANGUAGE = 'de';
 
     const TEST_URL_SUCCESS = 'https://localhost/success';
     const TEST_URL_FAILED = 'https://localhost/failed';

@@ -7,12 +7,8 @@ use Ibrows\DataTrans\Api\Authorization\Data\Response\AbstractAuthorizationRespon
 use Ibrows\DataTrans\Api\Authorization\Data\Response\CancelAuthorizationResponse;
 use Ibrows\DataTrans\Api\Authorization\Data\Response\FailedAuthorizationResponse;
 use Ibrows\DataTrans\Api\Authorization\Data\Response\SuccessfulAuthorizationResponse;
-use Ibrows\DataTrans\DataInterface;
 use Ibrows\DataTrans\Error\ErrorHandler;
 use Ibrows\DataTrans\Serializer\Serializer;
-use Saxulum\HttpClient\History;
-use Saxulum\HttpClient\Request;
-use Saxulum\HttpClient\Response;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class Authorization
@@ -49,20 +45,14 @@ class Authorization
 
     /**
      * @param  AbstractAuthorizationRequest           $authorizationRequest
-     * @return Request
+     * @return array
      */
-    public function buildAuthorizationRequest(AbstractAuthorizationRequest $authorizationRequest)
+    public function buildAuthorizationRequestData(AbstractAuthorizationRequest $authorizationRequest)
     {
         $violations = $this->validator->validate($authorizationRequest);
         $this->errorHandler->violations($violations);
 
-        $serializedAuthorizationRequest = $this->serializer->serializeToQuery($authorizationRequest);
-
-        return new Request(
-            '1.1',
-            Request::METHOD_GET,
-            DataInterface::URL_AUTHORIZATION . '?' . $serializedAuthorizationRequest
-        );
+        return $this->serializer->serializeToArray($authorizationRequest);
     }
 
     /**
@@ -99,7 +89,7 @@ class Authorization
      */
     protected function parseAuthorizationResponse(AbstractAuthorizationResponse $authorizationResponse, array $data)
     {
-        $this->serializer->unserializeArray($authorizationResponse, $data);
+        $this->serializer->unserializeFromArray($authorizationResponse, $data);
 
         return $authorizationResponse;
     }

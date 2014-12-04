@@ -6,11 +6,11 @@ use Ibrows\DataTrans\Api\Authorization\Authorization;
 use Ibrows\DataTrans\Api\Authorization\Data\Request\HiddenAuthorizationRequest;
 use Ibrows\DataTrans\DataInterface;
 use Ibrows\DataTrans\Error\ErrorHandler;
-use Ibrows\DataTrans\RequestHandler;
 use Ibrows\Tests\DataTrans\DataTransProvider;
 use Ibrows\Tests\DataTrans\TestDataInterface;
 use Pimple\Container;
 use Saxulum\HttpClient\History;
+use Saxulum\HttpClient\HttpClientInterface;
 use Saxulum\HttpClient\Request;
 
 class HiddenAuthorizationTest extends \PHPUnit_Framework_TestCase
@@ -21,13 +21,13 @@ class HiddenAuthorizationTest extends \PHPUnit_Framework_TestCase
         $container->register(new DataTransProvider());
 
         /** @var Authorization $dataTransAuthorization */
-        $dataTransAuthorization = $container['datatrans_authorization'];
+        $authorization = $container['datatrans_authorization'];
 
         /** @var ErrorHandler $errorHandler */
         $errorHandler = $container['datatrans_error_handler'];
 
-        /** @var RequestHandler $requestHandler */
-        $requestHandler = $container['datatrans_request'];
+        /** @var HttpClientInterface $httpClient */
+        $httpClient = $container['datatrans_httpclient'];
 
         $hiddenAuthorizationRequest = HiddenAuthorizationRequest::getInstance(
             TestDataInterface::TEST_MERCHANTID,
@@ -37,28 +37,27 @@ class HiddenAuthorizationTest extends \PHPUnit_Framework_TestCase
             null,
             TestDataInterface::TEST_URL_SUCCESS,
             TestDataInterface::TEST_URL_FAILED,
-            TestDataInterface::TEST_URL_CANCEL,
-            TestDataInterface::TEST_PAYMENTMETHOD,
-            TestDataInterface::TEST_CARDNUMBER,
-            null,
-            TestDataInterface::TEST_EXPM,
-            TestDataInterface::TEST_EXPY,
-            TestDataInterface::TEST_CVV
+            TestDataInterface::TEST_URL_CANCEL
         );
 
+        $hiddenAuthorizationRequest->setPaymentMethod(TestDataInterface::TEST_PAYMENTMETHOD);
+        $hiddenAuthorizationRequest->setCardNo(TestDataInterface::TEST_CARDNUMBER);
+        $hiddenAuthorizationRequest->setExpm(TestDataInterface::TEST_EXPM);
+        $hiddenAuthorizationRequest->setExpy(TestDataInterface::TEST_EXPY);
+        $hiddenAuthorizationRequest->setCvv(TestDataInterface::TEST_CVV);
+
         $hiddenAuthorizationRequest->setUppWebResponseMethod(DataInterface::RESPONSEMETHOD_GET);
-
         $hiddenAuthorizationRequest->setUppCustomerDetails(DataInterface::CUSTOMERDETAIL_TRUE);
-        $hiddenAuthorizationRequest->setUppCustomerFirstName('Max');
-        $hiddenAuthorizationRequest->setUppCustomerLastName('Mustermann');
-        $hiddenAuthorizationRequest->setUppCustomerStreet('Musterstrasse 0');
-        $hiddenAuthorizationRequest->setUppCustomerCity('Musterort');
-        $hiddenAuthorizationRequest->setUppCustomerZipCode('0000');
-        $hiddenAuthorizationRequest->setUppCustomerCountry('CHE');
-        $hiddenAuthorizationRequest->setUppCustomerEmail('max.muster@maxmustermannag.ch');
-        $hiddenAuthorizationRequest->setUppCustomerLanguage('de');
+        $hiddenAuthorizationRequest->setUppCustomerFirstName(TestDataInterface::TEST_CUSTOMER_FIRSTNAME);
+        $hiddenAuthorizationRequest->setUppCustomerLastName(TestDataInterface::TEST_CUSTOMER_LASTNAME);
+        $hiddenAuthorizationRequest->setUppCustomerStreet(TestDataInterface::TEST_CUSTOMER_STREET);
+        $hiddenAuthorizationRequest->setUppCustomerCity(TestDataInterface::TEST_CUSTOMER_CITY);
+        $hiddenAuthorizationRequest->setUppCustomerZipCode(TestDataInterface::TEST_CUSTOMER_ZIPCODE);
+        $hiddenAuthorizationRequest->setUppCustomerCountry(TestDataInterface::TEST_CUSTOMER_COUNTRY);
+        $hiddenAuthorizationRequest->setUppCustomerEmail(TestDataInterface::TEST_CUSTOMER_EMAIL);
+        $hiddenAuthorizationRequest->setUppCustomerLanguage(TestDataInterface::TEST_CUSTOMER_LANGUAGE);
 
-        $request = $dataTransAuthorization->buildAuthorizationRequest($hiddenAuthorizationRequest);
+        $authorizationRequestData = $authorization->buildAuthorizationRequestData($hiddenAuthorizationRequest);
 
         $violations = $errorHandler->getAndCleanViolations();
 
@@ -68,7 +67,13 @@ class HiddenAuthorizationTest extends \PHPUnit_Framework_TestCase
 
         $this->assertCount(0, $violations);
 
-        $response = $requestHandler->requestByRequestObject($request);
+        $response = $httpClient->request(new Request(
+            '1.1',
+            Request::METHOD_POST,
+            DataInterface::URL_AUTHORIZATION,
+            array(),
+            http_build_query($authorizationRequestData)
+        ));
 
         $this->assertEquals(200, $response->getStatusCode());
     }

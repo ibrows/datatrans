@@ -49,59 +49,6 @@ class HiddenAuthorizationRequest extends AbstractAuthorizationRequest
     protected $cvv;
 
     /**
-     * @param string $merchantId
-     * @param string $amount
-     * @param string $currency
-     * @param string $refNo
-     * @param string $sign
-     * @param string $successUrl
-     * @param string $errorUrl
-     * @param string $cancelUrl
-     * @param string $paymentMethod
-     * @param string $cardNo
-     * @param string $aliasCC
-     * @param string $expm
-     * @param string $expy
-     * @param string $cvv
-     * @return HiddenAuthorizationRequest
-     */
-    public static function getInstance(
-        $merchantId,
-        $amount,
-        $currency,
-        $refNo,
-        $sign,
-        $successUrl,
-        $errorUrl,
-        $cancelUrl,
-        $paymentMethod,
-        $cardNo,
-        $aliasCC,
-        $expm,
-        $expy,
-        $cvv
-    ) {
-        $instance = new self();
-
-        $instance->setMerchantId($merchantId);
-        $instance->setAmount($amount);
-        $instance->setCurrency($currency);
-        $instance->setRefNo($refNo);
-        $instance->setSign($sign);
-        $instance->setSuccessUrl($successUrl);
-        $instance->setErrorUrl($errorUrl);
-        $instance->setCancelUrl($cancelUrl);
-        $instance->setPaymentMethod($paymentMethod);
-        $instance->setCardNo($cardNo);
-        $instance->setAliasCC($aliasCC);
-        $instance->setExpm($expm);
-        $instance->setExpy($expy);
-        $instance->setCvv($cvv);
-
-        return $instance;
-    }
-
-    /**
      * @return string
      */
     public function getPaymentMethod()

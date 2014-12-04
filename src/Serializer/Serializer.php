@@ -21,22 +21,21 @@ class Serializer
 
     /**
      * @param  MappingInterface $object
-     * @return string
+     * @return array
      * @throws \Exception
      */
-    public function serializeToQuery(MappingInterface $object)
+    public function serializeToArray(MappingInterface $object)
     {
         $object->validateMappingConfiguration($this->saferpayErrorHandler);
-        $data = $object->getMappedData();
 
-        return http_build_query($data);
+        return $object->getMappedData();
     }
 
     /**
      * @param MappingInterface $object
      * @param array            $data
      */
-    public function unserializeArray(MappingInterface $object, array $data)
+    public function unserializeFromArray(MappingInterface $object, array $data)
     {
         $object->validateMappingConfiguration($this->saferpayErrorHandler);
         $object->setMappedData($data);
