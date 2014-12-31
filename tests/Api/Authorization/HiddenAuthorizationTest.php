@@ -57,6 +57,8 @@ class HiddenAuthorizationTest extends \PHPUnit_Framework_TestCase
         $hiddenAuthorizationRequest->setUppCustomerLanguage(TestDataInterface::CUSTOMER_LANGUAGE);
 
         $authorizationRequestData = $authorization->buildAuthorizationRequestData($hiddenAuthorizationRequest);
+        $this->assertArrayHasKey('uppCustomerLanguage',$authorizationRequestData);
+        $this->assertEquals(TestDataInterface::CUSTOMER_LANGUAGE,$authorizationRequestData['uppCustomerLanguage']);
 
         $violations = $errorHandler->getAndCleanViolations();
 
