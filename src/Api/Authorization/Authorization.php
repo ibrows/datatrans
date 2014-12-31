@@ -93,4 +93,14 @@ class Authorization
 
         return $authorizationResponse;
     }
+
+    /**
+     * @return ErrorHandler
+     */
+    public function getErrorHandler()
+    {
+        return $this->errorHandler;
+    }
+
+
 }

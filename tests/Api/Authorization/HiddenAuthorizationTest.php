@@ -15,6 +15,37 @@ use Saxulum\HttpClient\Request;
 
 class HiddenAuthorizationTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @return Authorization
+     */
+    protected function getDataTransAuthorization(){
+        $container = new Container();
+        $container->register(new DataTransProvider());
+        return $container['datatrans_authorization'];
+    }
+
+    public function testValidation(){
+        $authorization = $this->getDataTransAuthorization();
+        $hiddenAuthorizationRequest = HiddenAuthorizationRequest::getInstance(
+            TestDataInterface::MERCHANTID,
+            TestDataInterface::AMOUNT,
+            TestDataInterface::CURRENCY,
+            TestDataInterface::REFNO,
+            TestDataInterface::URL_FAILED,
+            TestDataInterface::URL_FAILED,
+            TestDataInterface::URL_CANCEL
+        );
+        $authorization->buildAuthorizationRequestData($hiddenAuthorizationRequest);
+        $violations = $authorization->getErrorHandler()->getAndCleanViolations();
+        $this->assertCount(8, $violations);
+
+        $hiddenAuthorizationRequest->setAmount('bla');
+        $authorization->buildAuthorizationRequestData($hiddenAuthorizationRequest);
+        $violations = $authorization->getErrorHandler()->getAndCleanViolations();
+
+        $this->assertCount(10, $violations);
+    }
+
     public function testGenerateAuthorizationRequest()
     {
         $container = new Container();
