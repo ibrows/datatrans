@@ -2,6 +2,9 @@
 
 namespace Ibrows\Tests\DataTrans;
 
+use Buzz\Browser;
+use Buzz\Client\Curl;
+use Buzz\Client\FileGetContents;
 use Ibrows\DataTrans\Api\Authorization\Authorization;
 use Ibrows\DataTrans\Error\ErrorHandler;
 use Ibrows\DataTrans\Serializer\Serializer;
@@ -37,7 +40,9 @@ class DataTransProvider implements ServiceProviderInterface
         };
 
         $pimple['datatrans_httpclient'] = function () {
-            return new HttpClient();
+            $client = new Curl();
+            return new HttpClient(new Browser($client));
+
         };
 
         $pimple['datatrans_authorization'] = function () use ($pimple) {
