@@ -26,7 +26,7 @@ class HiddenAuthorizationTest extends \PHPUnit_Framework_TestCase
 
     public function testValidation(){
         $authorization = $this->getDataTransAuthorization();
-        $hiddenAuthorizationRequest = HiddenAuthorizationRequest::getInstance(
+        $hiddenAuthorizationRequest = HiddenAuthorizationRequest::createValidInstance(
             TestDataInterface::MERCHANTID,
             TestDataInterface::AMOUNT,
             TestDataInterface::CURRENCY,
@@ -37,13 +37,13 @@ class HiddenAuthorizationTest extends \PHPUnit_Framework_TestCase
         );
         $authorization->buildAuthorizationRequestData($hiddenAuthorizationRequest);
         $violations = $authorization->getErrorHandler()->getAndCleanViolations();
-        $this->assertCount(8, $violations);
+        $this->assertCount(0, $violations);
 
         $hiddenAuthorizationRequest->setAmount('bla');
         $authorization->buildAuthorizationRequestData($hiddenAuthorizationRequest);
         $violations = $authorization->getErrorHandler()->getAndCleanViolations();
 
-        $this->assertCount(10, $violations);
+        $this->assertCount(2, $violations);
     }
 
     public function testGenerateAuthorizationRequest()
