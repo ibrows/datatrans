@@ -31,18 +31,22 @@ class HiddenAuthorizationTest extends \PHPUnit_Framework_TestCase
             TestDataInterface::AMOUNT,
             TestDataInterface::CURRENCY,
             TestDataInterface::REFNO,
+            TestDataInterface::URL_SUCCESS,
             TestDataInterface::URL_FAILED,
-            TestDataInterface::URL_FAILED,
-            TestDataInterface::URL_CANCEL
+            TestDataInterface::URL_CANCEL,
+            TestDataInterface::PAYMENTMETHOD,
+            TestDataInterface::CARDNUMBER,
+            TestDataInterface::EXPM,
+            TestDataInterface::EXPY,
+            TestDataInterface::CVV
         );
         $authorization->buildAuthorizationRequestData($hiddenAuthorizationRequest);
-        $violations = $authorization->getErrorHandler()->getAndCleanViolations();
+        $violations = $authorization->getAndCleanViolations();
         $this->assertCount(0, $violations);
 
         $hiddenAuthorizationRequest->setAmount('bla');
         $authorization->buildAuthorizationRequestData($hiddenAuthorizationRequest);
-        $violations = $authorization->getErrorHandler()->getAndCleanViolations();
-
+        $violations = $authorization->getAndCleanViolations();
         $this->assertCount(2, $violations);
     }
 
@@ -60,21 +64,20 @@ class HiddenAuthorizationTest extends \PHPUnit_Framework_TestCase
         /** @var HttpClientInterface $httpClient */
         $httpClient = $container['datatrans_httpclient'];
 
-        $hiddenAuthorizationRequest = HiddenAuthorizationRequest::getInstance(
+        $hiddenAuthorizationRequest = HiddenAuthorizationRequest::createValidInstance(
             TestDataInterface::MERCHANTID,
             TestDataInterface::AMOUNT,
             TestDataInterface::CURRENCY,
             TestDataInterface::REFNO,
             TestDataInterface::URL_SUCCESS,
             TestDataInterface::URL_FAILED,
-            TestDataInterface::URL_CANCEL
+            TestDataInterface::URL_CANCEL,
+            TestDataInterface::PAYMENTMETHOD,
+            TestDataInterface::CARDNUMBER,
+            TestDataInterface::EXPM,
+            TestDataInterface::EXPY,
+            TestDataInterface::CVV
         );
-
-        $hiddenAuthorizationRequest->setPaymentMethod(TestDataInterface::PAYMENTMETHOD);
-        $hiddenAuthorizationRequest->setCardNo(TestDataInterface::CARDNUMBER);
-        $hiddenAuthorizationRequest->setExpm(TestDataInterface::EXPM);
-        $hiddenAuthorizationRequest->setExpy(TestDataInterface::EXPY);
-        $hiddenAuthorizationRequest->setCvv(TestDataInterface::CVV);
 
         $hiddenAuthorizationRequest->setUppWebResponseMethod(DataInterface::RESPONSEMETHOD_GET);
         $hiddenAuthorizationRequest->setUppCustomerDetails(DataInterface::CUSTOMERDETAIL_TRUE);

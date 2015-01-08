@@ -195,41 +195,6 @@ abstract class AbstractAuthorizationRequest extends AbstractData
     protected $uppCustomerLanguage;
 
     /**
-     * @param string $merchantId
-     * @param string $amount
-     * @param string $currency
-     * @param string $refNo
-     * @param string $successUrl
-     * @param string $errorUrl
-     * @param string $cancelUrl
-     * @param string $sign
-     * @return static
-     */
-    public static function getInstance(
-        $merchantId,
-        $amount,
-        $currency,
-        $refNo,
-        $successUrl,
-        $errorUrl,
-        $cancelUrl,
-        $sign = null
-    ) {
-        $instance = new static();
-
-        $instance->setMerchantId($merchantId);
-        $instance->setAmount($amount);
-        $instance->setCurrency($currency);
-        $instance->setRefNo($refNo);
-        $instance->setSuccessUrl($successUrl);
-        $instance->setErrorUrl($errorUrl);
-        $instance->setCancelUrl($cancelUrl);
-        $instance->setSign($sign);
-
-        return $instance;
-    }
-
-    /**
      * @return string
      */
     public function getMerchantId()
@@ -887,7 +852,7 @@ abstract class AbstractAuthorizationRequest extends AbstractData
         }
 
         if (!in_array($alias, array_keys(\Dominikzogg\ClassHelpers\getConstantsWithPrefix(__CLASS__, 'BOOL_')))) {
-            $context->addViolationAt('status', "Unknown alias '{$alias}' given!");
+            $context->addViolationAt('alias', "Unknown alias '{$alias}' given!");
         }
     }
 
@@ -901,7 +866,7 @@ abstract class AbstractAuthorizationRequest extends AbstractData
         }
 
         if (!in_array($reqType, array_keys(\Dominikzogg\ClassHelpers\getConstantsWithPrefix(__CLASS__, 'REQTYPE_')))) {
-            $context->addViolationAt('status', "Unknown reqType '{$reqType}' given!");
+            $context->addViolationAt('reqType', "Unknown reqType '{$reqType}' given!");
         }
     }
 
@@ -915,7 +880,7 @@ abstract class AbstractAuthorizationRequest extends AbstractData
         }
 
         if (!in_array($uppWebResponseMethod, array_keys(\Dominikzogg\ClassHelpers\getConstantsWithPrefix(__CLASS__, 'RESPONSEMETHOD_')))) {
-            $context->addViolationAt('status', "Unknown uppWebResponseMethod '{$uppWebResponseMethod}' given!");
+            $context->addViolationAt('uppWebResponseMethod', "Unknown uppWebResponseMethod '{$uppWebResponseMethod}' given!");
         }
     }
 
@@ -929,7 +894,7 @@ abstract class AbstractAuthorizationRequest extends AbstractData
         }
 
         if (!in_array($uppMobileMode, array_keys(\Dominikzogg\ClassHelpers\getConstantsWithPrefix(__CLASS__, 'STATUS_')))) {
-            $context->addViolationAt('status', "Unknown uppMobileMode '{$uppMobileMode}' given!");
+            $context->addViolationAt('uppMobileMode', "Unknown uppMobileMode '{$uppMobileMode}' given!");
         }
     }
 
@@ -943,7 +908,7 @@ abstract class AbstractAuthorizationRequest extends AbstractData
         }
 
         if (!in_array($uppTouchUI, array_keys(\Dominikzogg\ClassHelpers\getConstantsWithPrefix(__CLASS__, 'BOOL_')))) {
-            $context->addViolationAt('status', "Unknown uppTouchUI '{$uppTouchUI}' given!");
+            $context->addViolationAt('uppTouchUI', "Unknown uppTouchUI '{$uppTouchUI}' given!");
         }
     }
 
@@ -957,7 +922,7 @@ abstract class AbstractAuthorizationRequest extends AbstractData
         }
 
         if (!in_array($uppReturnMaskedCC, array_keys(\Dominikzogg\ClassHelpers\getConstantsWithPrefix(__CLASS__, 'BOOL_')))) {
-            $context->addViolationAt('status', "Unknown uppReturnMaskedCC '{$uppReturnMaskedCC}' given!");
+            $context->addViolationAt('uppReturnMaskedCC', "Unknown uppReturnMaskedCC '{$uppReturnMaskedCC}' given!");
         }
     }
 
@@ -971,7 +936,7 @@ abstract class AbstractAuthorizationRequest extends AbstractData
         }
 
         if (!in_array($uppCustomerDetails, array_keys(\Dominikzogg\ClassHelpers\getConstantsWithPrefix(__CLASS__, 'CUSTOMERDETAIL_')))) {
-            $context->addViolationAt('status', "Unknown uppCustomerDetails '{$uppCustomerDetails}' given!");
+            $context->addViolationAt('uppCustomerDetails', "Unknown uppCustomerDetails '{$uppCustomerDetails}' given!");
         }
     }
 
@@ -985,7 +950,7 @@ abstract class AbstractAuthorizationRequest extends AbstractData
         }
 
         if (!in_array($uppCustomerGender, array_keys(\Dominikzogg\ClassHelpers\getConstantsWithPrefix(__CLASS__, 'GENDER_')))) {
-            $context->addViolationAt('status', "Unknown uppCustomerGender '{$uppCustomerGender}' given!");
+            $context->addViolationAt('uppCustomerGender', "Unknown uppCustomerGender '{$uppCustomerGender}' given!");
         }
     }
 

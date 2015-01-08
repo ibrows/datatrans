@@ -15,7 +15,7 @@ $authorization = new Authorization(
 ### Prepare authorization request
 
 ``` {.php}
-$standardAuthorizationRequest = StandardAuthorizationRequest::getInstance(
+$standardAuthorizationRequest = StandardAuthorizationRequest::createValidInstance(
     TestDataInterface::MERCHANTID,
     TestDataInterface::AMOUNT,
     TestDataInterface::CURRENCY,

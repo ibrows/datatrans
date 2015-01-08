@@ -49,6 +49,56 @@ class HiddenAuthorizationRequest extends AbstractAuthorizationRequest
     protected $cvv;
 
     /**
+     * @param string $merchantId
+     * @param string $amount
+     * @param string $currency
+     * @param string $refNo
+     * @param string $successUrl
+     * @param string $errorUrl
+     * @param string $cancelUrl
+     * @param string $paymentMethod
+     * @param string $cardNo
+     * @param string $expm
+     * @param string $expy
+     * @param string $cvv
+     * @param string $sign
+     * @return static
+     */
+    public static function createValidInstance(
+        $merchantId,
+        $amount,
+        $currency,
+        $refNo,
+        $successUrl,
+        $errorUrl,
+        $cancelUrl,
+        $paymentMethod,
+        $cardNo,
+        $expm,
+        $expy,
+        $cvv,
+        $sign = null
+    ) {
+        $instance = new static();
+
+        $instance->setMerchantId($merchantId);
+        $instance->setAmount($amount);
+        $instance->setCurrency($currency);
+        $instance->setRefNo($refNo);
+        $instance->setSuccessUrl($successUrl);
+        $instance->setErrorUrl($errorUrl);
+        $instance->setCancelUrl($cancelUrl);
+        $instance->setPaymentMethod($paymentMethod);
+        $instance->setCardNo($cardNo);
+        $instance->setExpm($expm);
+        $instance->setExpy($expy);
+        $instance->setCvv($cvv);
+        $instance->setSign($sign);
+
+        return $instance;
+    }
+
+    /**
      * @return string
      */
     public function getPaymentMethod()
@@ -182,7 +232,7 @@ class HiddenAuthorizationRequest extends AbstractAuthorizationRequest
         $paymentMethod = $this->getPaymentMethod();
 
         if (!in_array($paymentMethod, array_keys(\Dominikzogg\ClassHelpers\getConstantsWithPrefix(__CLASS__, 'PAYMENTMETHOD_')))) {
-            $context->addViolationAt('status', "Unknown paymentmethod '{$paymentMethod}' given!");
+            $context->addViolationAt('paymentmethod', "Unknown paymentmethod '{$paymentMethod}' given!");
         }
     }
 
@@ -208,7 +258,7 @@ class HiddenAuthorizationRequest extends AbstractAuthorizationRequest
         $expm = $this->getExpm();
 
         if (!in_array($expm, array_keys(\Dominikzogg\ClassHelpers\getConstantsWithPrefix(__CLASS__, 'MONTH_')))) {
-            $context->addViolationAt('status', "Unknown expm '{$expm}' given!");
+            $context->addViolationAt('expm', "Unknown expm '{$expm}' given!");
         }
     }
 
@@ -227,7 +277,7 @@ class HiddenAuthorizationRequest extends AbstractAuthorizationRequest
         }
 
         if (!in_array($expy, $years, true)) {
-            $context->addViolationAt('status', "Invalid expy '{$expy}' given!");
+            $context->addViolationAt('expy', "Invalid expy '{$expy}' given!");
         }
     }
 

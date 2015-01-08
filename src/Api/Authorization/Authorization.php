@@ -9,6 +9,7 @@ use Ibrows\DataTrans\Api\Authorization\Data\Response\FailedAuthorizationResponse
 use Ibrows\DataTrans\Api\Authorization\Data\Response\SuccessfulAuthorizationResponse;
 use Ibrows\DataTrans\Error\ErrorHandler;
 use Ibrows\DataTrans\Serializer\Serializer;
+use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
 class Authorization
@@ -95,12 +96,10 @@ class Authorization
     }
 
     /**
-     * @return ErrorHandler
+     * @return ConstraintViolationInterface
      */
-    public function getErrorHandler()
+    public function getAndCleanViolations()
     {
-        return $this->errorHandler;
+        return $this->errorHandler->getAndCleanViolations();
     }
-
-
 }
