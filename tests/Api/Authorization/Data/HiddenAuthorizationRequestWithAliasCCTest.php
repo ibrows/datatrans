@@ -24,6 +24,18 @@ class HiddenAuthorizationRequestWithAliasCCTest extends \PHPUnit_Framework_TestC
 
     public function testGetterSetterWithAliasCC()
     {
+        HiddenAuthorizationRequestWithAliasCC::createValidInstance(
+            TestDataInterface::MERCHANTID,
+            TestDataInterface::AMOUNT,
+            TestDataInterface::CURRENCY,
+            TestDataInterface::REFNO,
+            TestDataInterface::URL_SUCCESS,
+            TestDataInterface::URL_FAILED,
+            TestDataInterface::URL_CANCEL,
+            TestDataInterface::ALIASCC,
+            TestDataInterface::SIGN
+        );
+
         $hiddenAuthorizationRequest = new HiddenAuthorizationRequestWithAliasCC();
 
         $hiddenAuthorizationRequest->setMerchantId(TestDataInterface::MERCHANTID);

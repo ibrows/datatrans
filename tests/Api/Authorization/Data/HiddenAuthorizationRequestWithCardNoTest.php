@@ -24,6 +24,22 @@ class HiddenAuthorizationRequestWithCardNoTest extends \PHPUnit_Framework_TestCa
 
     public function testGetterSetterWithCardNo()
     {
+        HiddenAuthorizationRequestWithCardNo::createValidInstance(
+            TestDataInterface::MERCHANTID,
+            TestDataInterface::AMOUNT,
+            TestDataInterface::CURRENCY,
+            TestDataInterface::REFNO,
+            TestDataInterface::URL_SUCCESS,
+            TestDataInterface::URL_FAILED,
+            TestDataInterface::URL_CANCEL,
+            TestDataInterface::PAYMENTMETHOD,
+            TestDataInterface::CARDNUMBER,
+            TestDataInterface::EXPM,
+            TestDataInterface::EXPY,
+            TestDataInterface::CVV,
+            TestDataInterface::SIGN
+        );
+
         $hiddenAuthorizationRequest = new HiddenAuthorizationRequestWithCardNo;
 
         $hiddenAuthorizationRequest->setMerchantId(TestDataInterface::MERCHANTID);

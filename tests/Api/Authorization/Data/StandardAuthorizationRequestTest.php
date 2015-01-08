@@ -24,6 +24,17 @@ class StandardAuthorizationRequestTest extends \PHPUnit_Framework_TestCase
 
     public function testGetterSetterWithCardNo()
     {
+        StandardAuthorizationRequest::createValidInstance(
+            TestDataInterface::MERCHANTID,
+            TestDataInterface::AMOUNT,
+            TestDataInterface::CURRENCY,
+            TestDataInterface::REFNO,
+            TestDataInterface::URL_SUCCESS,
+            TestDataInterface::URL_FAILED,
+            TestDataInterface::URL_CANCEL,
+            TestDataInterface::SIGN
+        );
+
         $hiddenAuthorizationRequest = new StandardAuthorizationRequest;
 
         $hiddenAuthorizationRequest->setMerchantId(TestDataInterface::MERCHANTID);
