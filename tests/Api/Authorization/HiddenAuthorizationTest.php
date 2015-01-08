@@ -2,30 +2,26 @@
 
 namespace Ibrows\Tests\DataTrans\Api\Authorization;
 
+use Buzz\Browser;
+use Buzz\Client\Curl;
 use Ibrows\DataTrans\Api\Authorization\Authorization;
 use Ibrows\DataTrans\Api\Authorization\Data\Request\HiddenAuthorizationRequest;
 use Ibrows\DataTrans\DataInterface;
 use Ibrows\DataTrans\Error\ErrorHandler;
-use Ibrows\Tests\DataTrans\DataTransProvider;
+use Ibrows\DataTrans\Serializer\Serializer;
 use Ibrows\Tests\DataTrans\TestDataInterface;
-use Pimple\Container;
+use Psr\Log\NullLogger;
+use Saxulum\HttpClient\Buzz\HttpClient;
 use Saxulum\HttpClient\History;
 use Saxulum\HttpClient\HttpClientInterface;
 use Saxulum\HttpClient\Request;
+use Symfony\Component\Validator\Validation;
 
 class HiddenAuthorizationTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @return Authorization
-     */
-    protected function getDataTransAuthorization(){
-        $container = new Container();
-        $container->register(new DataTransProvider());
-        return $container['datatrans_authorization'];
-    }
-
-    public function testValidation(){
-        $authorization = $this->getDataTransAuthorization();
+    public function testValidation()
+    {
+        $authorization = $this->getAuthorization();
         $hiddenAuthorizationRequest = HiddenAuthorizationRequest::createValidInstance(
             TestDataInterface::MERCHANTID,
             TestDataInterface::AMOUNT,
@@ -42,27 +38,28 @@ class HiddenAuthorizationTest extends \PHPUnit_Framework_TestCase
         );
         $authorization->buildAuthorizationRequestData($hiddenAuthorizationRequest);
         $violations = $authorization->getAndCleanViolations();
+
+        if (count($violations)) {
+            var_dump($violations);
+        }
+
         $this->assertCount(0, $violations);
 
         $hiddenAuthorizationRequest->setAmount('bla');
         $authorization->buildAuthorizationRequestData($hiddenAuthorizationRequest);
         $violations = $authorization->getAndCleanViolations();
+
+        if (count($violations) !== 2) {
+            var_dump($violations);
+        }
+
         $this->assertCount(2, $violations);
     }
 
     public function testGenerateAuthorizationRequest()
     {
-        $container = new Container();
-        $container->register(new DataTransProvider());
-
-        /** @var Authorization $dataTransAuthorization */
-        $authorization = $container['datatrans_authorization'];
-
-        /** @var ErrorHandler $errorHandler */
-        $errorHandler = $container['datatrans_error_handler'];
-
-        /** @var HttpClientInterface $httpClient */
-        $httpClient = $container['datatrans_httpclient'];
+        $authorization = $this->getAuthorization();
+        $httpClient = $this->getHttpClient();
 
         $hiddenAuthorizationRequest = HiddenAuthorizationRequest::createValidInstance(
             TestDataInterface::MERCHANTID,
@@ -91,10 +88,10 @@ class HiddenAuthorizationTest extends \PHPUnit_Framework_TestCase
         $hiddenAuthorizationRequest->setUppCustomerLanguage(TestDataInterface::CUSTOMER_LANGUAGE);
 
         $authorizationRequestData = $authorization->buildAuthorizationRequestData($hiddenAuthorizationRequest);
-        $this->assertArrayHasKey('uppCustomerLanguage',$authorizationRequestData);
-        $this->assertEquals(TestDataInterface::CUSTOMER_LANGUAGE,$authorizationRequestData['uppCustomerLanguage']);
+        $this->assertArrayHasKey('uppCustomerLanguage', $authorizationRequestData);
+        $this->assertEquals(TestDataInterface::CUSTOMER_LANGUAGE, $authorizationRequestData['uppCustomerLanguage']);
 
-        $violations = $errorHandler->getAndCleanViolations();
+        $violations = $authorization->getAndCleanViolations();
 
         if (count($violations)) {
             var_dump($violations);
@@ -115,21 +112,14 @@ class HiddenAuthorizationTest extends \PHPUnit_Framework_TestCase
 
     public function testParseSuccessAuthorizationReponse()
     {
-        $container = new Container();
-        $container->register(new DataTransProvider());
-
-        /** @var Authorization $dataTransAuthorization */
-        $dataTransAuthorization = $container['datatrans_authorization'];
-
-        /** @var ErrorHandler $errorHandler */
-        $errorHandler = $container['datatrans_error_handler'];
+        $authorization = $this->getAuthorization();
 
         $queryParams = array();
         parse_str(parse_url(TestDataInterface::RESPONSE_SUCCESS, PHP_URL_QUERY), $queryParams);
 
-        $successAuthorizationResponse = $dataTransAuthorization->parseSuccessAuthorizationResponse($queryParams);
+        $successAuthorizationResponse = $authorization->parseSuccessAuthorizationResponse($queryParams);
 
-        $violations = $errorHandler->getAndCleanViolations();
+        $violations = $authorization->getAndCleanViolations();
 
         if (count($violations)) {
             var_dump($violations);
@@ -156,21 +146,14 @@ class HiddenAuthorizationTest extends \PHPUnit_Framework_TestCase
 
     public function testParseFailedAuthorizationReponse()
     {
-        $container = new Container();
-        $container->register(new DataTransProvider());
-
-        /** @var Authorization $dataTransAuthorization */
-        $dataTransAuthorization = $container['datatrans_authorization'];
-
-        /** @var ErrorHandler $errorHandler */
-        $errorHandler = $container['datatrans_error_handler'];
+        $authorization = $this->getAuthorization();
 
         $queryParams = array();
         parse_str(parse_url(TestDataInterface::RESPONSE_FAILED, PHP_URL_QUERY), $queryParams);
 
-        $failedAuthorizationResponse = $dataTransAuthorization->parseFailedAuthorizationResponse($queryParams);
+        $failedAuthorizationResponse = $authorization->parseFailedAuthorizationResponse($queryParams);
 
-        $violations = $errorHandler->getAndCleanViolations();
+        $violations = $authorization->getAndCleanViolations();
 
         if (count($violations)) {
             var_dump($violations);
@@ -190,5 +173,32 @@ class HiddenAuthorizationTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(TestDataInterface::CURRENCY, $failedAuthorizationResponse->getCurrency());
         $this->assertEquals('error', $failedAuthorizationResponse->getStatus());
         $this->assertEquals(DataInterface::MSGTYPE_GET, $failedAuthorizationResponse->getUppMsgType());
+    }
+
+    /**
+     * @return Authorization
+     */
+    protected function getAuthorization()
+    {
+        $errorHandler = new ErrorHandler(new NullLogger());
+        $serializer = new Serializer($errorHandler);
+        $validator = Validation::createValidatorBuilder()
+            ->addMethodMapping('loadValidatorMetadata')
+            ->getValidator()
+        ;
+
+        return new Authorization(
+            $validator,
+            $errorHandler,
+            $serializer
+        );
+    }
+
+    /**
+     * @return HttpClient
+     */
+    protected function getHttpClient()
+    {
+        return new HttpClient(new Browser(new Curl()));
     }
 }
