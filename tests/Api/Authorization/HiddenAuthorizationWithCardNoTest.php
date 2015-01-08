@@ -5,7 +5,7 @@ namespace Ibrows\Tests\DataTrans\Api\Authorization;
 use Buzz\Browser;
 use Buzz\Client\Curl;
 use Ibrows\DataTrans\Api\Authorization\Authorization;
-use Ibrows\DataTrans\Api\Authorization\Data\Request\HiddenAuthorizationRequest;
+use Ibrows\DataTrans\Api\Authorization\Data\Request\HiddenAuthorizationRequestWithCardNo;
 use Ibrows\DataTrans\DataInterface;
 use Ibrows\DataTrans\Error\ErrorHandler;
 use Ibrows\DataTrans\Serializer\Serializer;
@@ -17,51 +17,14 @@ use Saxulum\HttpClient\HttpClientInterface;
 use Saxulum\HttpClient\Request;
 use Symfony\Component\Validator\Validation;
 
-class HiddenAuthorizationTest extends \PHPUnit_Framework_TestCase
+class HiddenAuthorizationWithCardNoTest extends \PHPUnit_Framework_TestCase
 {
-    public function testValidation()
-    {
-        $authorization = $this->getAuthorization();
-        $hiddenAuthorizationRequest = HiddenAuthorizationRequest::createValidInstance(
-            TestDataInterface::MERCHANTID,
-            TestDataInterface::AMOUNT,
-            TestDataInterface::CURRENCY,
-            TestDataInterface::REFNO,
-            TestDataInterface::URL_SUCCESS,
-            TestDataInterface::URL_FAILED,
-            TestDataInterface::URL_CANCEL,
-            TestDataInterface::PAYMENTMETHOD,
-            TestDataInterface::CARDNUMBER,
-            TestDataInterface::EXPM,
-            TestDataInterface::EXPY,
-            TestDataInterface::CVV
-        );
-        $authorization->buildAuthorizationRequestData($hiddenAuthorizationRequest);
-        $violations = $authorization->getAndCleanViolations();
-
-        if (count($violations)) {
-            var_dump($violations);
-        }
-
-        $this->assertCount(0, $violations);
-
-        $hiddenAuthorizationRequest->setAmount('bla');
-        $authorization->buildAuthorizationRequestData($hiddenAuthorizationRequest);
-        $violations = $authorization->getAndCleanViolations();
-
-        if (count($violations) !== 2) {
-            var_dump($violations);
-        }
-
-        $this->assertCount(2, $violations);
-    }
-
     public function testGenerateAuthorizationRequest()
     {
         $authorization = $this->getAuthorization();
         $httpClient = $this->getHttpClient();
 
-        $hiddenAuthorizationRequest = HiddenAuthorizationRequest::createValidInstance(
+        $hiddenAuthorizationRequest = HiddenAuthorizationRequestWithCardNo::createValidInstance(
             TestDataInterface::MERCHANTID,
             TestDataInterface::AMOUNT,
             TestDataInterface::CURRENCY,

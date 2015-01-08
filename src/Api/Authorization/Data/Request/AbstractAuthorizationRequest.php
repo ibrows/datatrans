@@ -195,6 +195,11 @@ abstract class AbstractAuthorizationRequest extends AbstractData
     protected $uppCustomerLanguage;
 
     /**
+     * @var string
+     */
+    protected $hiddenMode = self::BOOL_TRUE;
+
+    /**
      * @return string
      */
     public function getMerchantId()
@@ -843,6 +848,24 @@ abstract class AbstractAuthorizationRequest extends AbstractData
     }
 
     /**
+     * @return string
+     */
+    public function getHiddenMode()
+    {
+        return $this->hiddenMode;
+    }
+
+    /**
+     * @param string $hiddenMode
+     * @return $this
+     */
+    public function setHiddenMode($hiddenMode)
+    {
+        $this->hiddenMode = $hiddenMode;
+        return $this;
+    }
+
+    /**
      * @param ExecutionContextInterface $context
      */
     public function isValidAlias(ExecutionContextInterface $context)
@@ -1106,6 +1129,7 @@ abstract class AbstractAuthorizationRequest extends AbstractData
             new MappingConfiguration('uppCustomerGender', 'uppCustomerGender'),
             new MappingConfiguration('uppCustomerBirthDate', 'uppCustomerBirthDate'),
             new MappingConfiguration('uppCustomerLanguage', 'uppCustomerLanguage'),
+            new MappingConfiguration('hiddenMode', 'hiddenMode'),
         );
     }
 }

@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 
-class HiddenAuthorizationRequest extends AbstractAuthorizationRequest
+class HiddenAuthorizationRequestWithCardNo extends AbstractAuthorizationRequest
 {
     /**
      * @var string
@@ -22,11 +22,6 @@ class HiddenAuthorizationRequest extends AbstractAuthorizationRequest
      * @var string
      */
     protected $cardNo;
-
-    /**
-     * @var string
-     */
-    protected $aliasCC;
 
     /**
      * @var string
@@ -137,24 +132,6 @@ class HiddenAuthorizationRequest extends AbstractAuthorizationRequest
     /**
      * @return string
      */
-    public function getAliasCC()
-    {
-        return $this->aliasCC;
-    }
-
-    /**
-     * @param string $aliasCC
-     * @return $this
-     */
-    public function setAliasCC($aliasCC)
-    {
-        $this->aliasCC = $aliasCC;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
     public function getExpm()
     {
         return $this->expm;
@@ -191,24 +168,6 @@ class HiddenAuthorizationRequest extends AbstractAuthorizationRequest
     /**
      * @return string
      */
-    public function getHiddenMode()
-    {
-        return $this->hiddenMode;
-    }
-
-    /**
-     * @param string $hiddenMode
-     * @return $this
-     */
-    public function setHiddenMode($hiddenMode)
-    {
-        $this->hiddenMode = $hiddenMode;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
     public function getCvv()
     {
         return $this->cvv;
@@ -233,20 +192,6 @@ class HiddenAuthorizationRequest extends AbstractAuthorizationRequest
 
         if (!in_array($paymentMethod, array_keys(\Dominikzogg\ClassHelpers\getConstantsWithPrefix(__CLASS__, 'PAYMENTMETHOD_')))) {
             $context->addViolationAt('paymentmethod', "Unknown paymentmethod '{$paymentMethod}' given!");
-        }
-    }
-
-    /**
-     * @param ExecutionContextInterface $context
-     */
-    public function isCardNoOrAliasCC(ExecutionContextInterface $context)
-    {
-        if (null === $this->getCardNo() && null === $this->getAliasCC()) {
-            $context->addViolationAt('cardNo', 'cardNo or aliasCC needs a value!');
-        }
-
-        if (null !== $this->getCardNo() && null !== $this->getAliasCC()) {
-            $context->addViolationAt('aliasCC', 'Property aliasCC has to be null, if cardNo is given!');
         }
     }
 
@@ -293,15 +238,9 @@ class HiddenAuthorizationRequest extends AbstractAuthorizationRequest
             'methods' => array('isValidPaymentMethod'),
         )));
 
+        $metadata->addPropertyConstraint('cardNo', new NotBlank());
         $metadata->addPropertyConstraint('cardNo', new Length(array('min' => 0, 'max' => 20)));
         $metadata->addPropertyConstraint('cardNo', new Regex(array('pattern' => Pattern::ALPHA_NUMERIC)));
-
-        $metadata->addPropertyConstraint('aliasCC', new Length(array('min' => 0, 'max' => 20)));
-        $metadata->addPropertyConstraint('aliasCC', new Regex(array('pattern' => Pattern::ALPHA_NUMERIC)));
-
-        $metadata->addConstraint(new Callback(array(
-            'methods' => array('isCardNoOrAliasCC'),
-        )));
 
         $metadata->addPropertyConstraint('expm', new NotBlank());
         $metadata->addConstraint(new Callback(array(
@@ -326,10 +265,8 @@ class HiddenAuthorizationRequest extends AbstractAuthorizationRequest
         return array_merge(parent::getMappingConfigurations(), array(
             new MappingConfiguration('paymentMethod', 'paymentmethod'),
             new MappingConfiguration('cardNo', 'cardno'),
-            new MappingConfiguration('aliasCC', 'aliasCC'),
             new MappingConfiguration('expm', 'expm'),
             new MappingConfiguration('expy', 'expy'),
-            new MappingConfiguration('hiddenMode', 'hiddenMode'),
             new MappingConfiguration('cvv', 'cvv'),
         ));
     }

@@ -16,6 +16,7 @@ interface TestDataInterface
     const EXPY = '15';
     const CVV = '123';
     const SIGN = '30916165706580013';
+    const ALIASCC = 'alias1';
     const CUSTOMER_FIRSTNAME = 'Max';
     const CUSTOMER_LASTNAME = 'Mustermann';
     const CUSTOMER_STREET = 'Musterstrasse 0';
