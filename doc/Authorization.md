@@ -40,7 +40,7 @@ $standardAuthorizationRequest->setUppCustomerLanguage(TestDataInterface::CUSTOME
 ### Get authorization request data
 
 ``` {.php}
-$authorizationRequestData = $authorization->buildAuthorizationRequestData($standardAuthorizationRequest);
+$authorizationRequestData = $authorization->serializeAuthorizationRequestData($standardAuthorizationRequest);
 ```
 
 ### Build url
@@ -60,25 +60,25 @@ die();
 
 ``` {.php}
 $queryParams = array();
-parse_str(parse_url($_SERVER['REQUEST_URI'], $queryParams);
+unserialize_str(unserialize_url($_SERVER['REQUEST_URI'], $queryParams);
 
-$successAuthorizationResponse = $authorization->parseSuccessAuthorizationResponse($queryParams);
+$successAuthorizationResponse = $authorization->unserializeSuccessAuthorizationResponse($queryParams);
 ```
 
 ### Handle fail response
 
 ``` {.php}
 $queryParams = array();
-parse_str(parse_url($_SERVER['REQUEST_URI'], $queryParams);
+unserialize_str(unserialize_url($_SERVER['REQUEST_URI'], $queryParams);
 
-$failedAuthorizationResponse = $authorization->parseFailedAuthorizationResponse($queryParams);
+$failedAuthorizationResponse = $authorization->unserializeFailedAuthorizationResponse($queryParams);
 ```
 
 ### Handle cancel response
 
 ``` {.php}
 $queryParams = array();
-parse_str(parse_url($_SERVER['REQUEST_URI'], $queryParams);
+unserialize_str(unserialize_url($_SERVER['REQUEST_URI'], $queryParams);
 
-$cancelAuthorizationResponse = $authorization->parseCancelAuthorizationResponse($queryParams);
+$cancelAuthorizationResponse = $authorization->unserializeCancelAuthorizationResponse($queryParams);
 ```
