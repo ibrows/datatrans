@@ -3,6 +3,9 @@
 namespace Ibrows\DataTrans\Api\Authorization;
 
 use Ibrows\DataTrans\Api\Authorization\Data\Request\AbstractAuthorizationRequest;
+use Ibrows\DataTrans\Api\Authorization\Data\Request\HiddenAuthorizationRequestWithAliasCC;
+use Ibrows\DataTrans\Api\Authorization\Data\Request\HiddenAuthorizationRequestWithCardNo;
+use Ibrows\DataTrans\Api\Authorization\Data\Request\StandardAuthorizationRequest;
 use Ibrows\DataTrans\Api\Authorization\Data\Response\AbstractAuthorizationResponse;
 use Ibrows\DataTrans\Api\Authorization\Data\Response\CancelAuthorizationResponse;
 use Ibrows\DataTrans\Api\Authorization\Data\Response\FailedAuthorizationResponse;
@@ -23,6 +26,123 @@ class SimpleAuthorization
     public function __construct(Authorization $authorization)
     {
         $this->authorization = $authorization;
+    }
+
+    /**
+     * @param string $merchantId
+     * @param string $amount
+     * @param string $currency
+     * @param string $refNo
+     * @param string $successUrl
+     * @param string $errorUrl
+     * @param string $cancelUrl
+     * @param string|null $sign
+     * @return StandardAuthorizationRequest
+     */
+    public function createStandardAuthorizationRequest(
+        $merchantId,
+        $amount,
+        $currency,
+        $refNo,
+        $successUrl,
+        $errorUrl,
+        $cancelUrl,
+        $sign = null
+    ) {
+        return $this->authorization->createStandardAuthorizationRequest(
+            $merchantId,
+            $amount,
+            $currency,
+            $refNo,
+            $successUrl,
+            $errorUrl,
+            $cancelUrl,
+            $sign
+        );
+    }
+
+    /**
+     * @param string $merchantId
+     * @param string $amount
+     * @param string $currency
+     * @param string $refNo
+     * @param string $successUrl
+     * @param string $errorUrl
+     * @param string $cancelUrl
+     * @param string $paymentMethod
+     * @param string $cardNo
+     * @param string $expm
+     * @param string $expy
+     * @param string $cvv
+     * @param string|null $sign
+     * @return HiddenAuthorizationRequestWithCardNo
+     */
+    public function createHiddenAuthorizationRequestWithCardNo(
+        $merchantId,
+        $amount,
+        $currency,
+        $refNo,
+        $successUrl,
+        $errorUrl,
+        $cancelUrl,
+        $paymentMethod,
+        $cardNo,
+        $expm,
+        $expy,
+        $cvv,
+        $sign = null
+    ) {
+        return $this->authorization->createHiddenAuthorizationRequestWithCardNo(
+            $merchantId,
+            $amount,
+            $currency,
+            $refNo,
+            $successUrl,
+            $errorUrl,
+            $cancelUrl,
+            $paymentMethod,
+            $cardNo,
+            $expm,
+            $expy,
+            $cvv,
+            $sign
+        );
+    }
+
+    /**
+     * @param string $merchantId
+     * @param string $amount
+     * @param string $currency
+     * @param string $refNo
+     * @param string $successUrl
+     * @param string $errorUrl
+     * @param string $cancelUrl
+     * @param string $aliasCC
+     * @param string|null $sign
+     * @return HiddenAuthorizationRequestWithAliasCC
+     */
+    public function createHiddenAuthorizationRequestWithAliasCC(
+        $merchantId,
+        $amount,
+        $currency,
+        $refNo,
+        $successUrl,
+        $errorUrl,
+        $cancelUrl,
+        $aliasCC,
+        $sign = null
+    ) {
+        return $this->authorization->createHiddenAuthorizationRequestWithAliasCC(
+            $merchantId,
+            $amount,
+            $currency,
+            $refNo,
+            $successUrl,
+            $errorUrl,
+            $cancelUrl,
+            $aliasCC,
+            $sign
+        );
     }
 
     /**
