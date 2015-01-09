@@ -183,7 +183,7 @@ class FailedAuthorizationResponse extends AbstractAuthorizationResponse
         parent::loadValidatorMetadata($metadata);
 
         $metadata->addPropertyConstraint('errorCode', new NotBlank());
-        $metadata->addPropertyConstraint('errorCode', new Length(array('min' => 7, 'max' => 7)));
+        $metadata->addPropertyConstraint('errorCode', new Length(array('min' => 0, 'max' => 7)));
         $metadata->addPropertyConstraint('errorCode', new Regex(array('pattern' => Pattern::NUMERIC)));
 
         $metadata->addPropertyConstraint('errorMessage', new NotBlank());
@@ -213,7 +213,7 @@ class FailedAuthorizationResponse extends AbstractAuthorizationResponse
             new MappingConfiguration('errorMessage', 'errorMessage'),
             new MappingConfiguration('errorDetail', 'errorDetail'),
             new MappingConfiguration('pMethod', 'pmethod'),
-            new MappingConfiguration('reqType', 'reqType'),
+            new MappingConfiguration('reqType', 'reqtype'),
             new MappingConfiguration('acqErrorCode', 'acqErrorCode'),
         ));
     }

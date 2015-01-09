@@ -7,6 +7,7 @@ use Ibrows\DataTrans\Api\Authorization\Data\Response\AbstractAuthorizationRespon
 use Ibrows\DataTrans\Api\Authorization\Data\Response\CancelAuthorizationResponse;
 use Ibrows\DataTrans\Api\Authorization\Data\Response\FailedAuthorizationResponse;
 use Ibrows\DataTrans\Api\Authorization\Data\Response\SuccessfulAuthorizationResponse;
+use Ibrows\DataTrans\DataInterface;
 use Ibrows\DataTrans\Error\ErrorHandler;
 use Ibrows\DataTrans\Serializer\Serializer;
 use Symfony\Component\Validator\ConstraintViolationInterface;
@@ -45,61 +46,89 @@ class Authorization
     }
 
     /**
-     * @param  AbstractAuthorizationRequest           $authorizationRequest
-     * @return array
+     * @param AbstractAuthorizationRequest $authorizationRequest
+     * @return \Symfony\Component\Validator\ConstraintViolationListInterface
      */
-    public function buildAuthorizationRequestData(AbstractAuthorizationRequest $authorizationRequest)
+    public function validateAuthorizationRequest(AbstractAuthorizationRequest $authorizationRequest)
     {
         $violations = $this->validator->validate($authorizationRequest);
         $this->errorHandler->violations($violations);
 
+        return $violations;
+    }
+
+    /**
+     * @param  AbstractAuthorizationRequest $authorizationRequest
+     * @return array
+     */
+    public function serializeAuthorizationRequestData(AbstractAuthorizationRequest $authorizationRequest)
+    {
         return $this->serializer->serializeToArray($authorizationRequest);
+    }
+
+    /**
+     * @param string $status
+     * @param array  $data
+     * @return AbstractAuthorizationResponse
+     */
+    public function unserializeAuthorizationResponseByStatus($status, array $data)
+    {
+        if (DataInterface::RESPONSESTATUS_SUCCESS === $status) {
+            return $this->unserializeSuccessAuthorizationResponse($data);
+        } elseif (DataInterface::RESPONSESTATUS_FAILED === $status) {
+            return $this->unserializeFailedAuthorizationResponse($data);
+        } elseif (DataInterface::RESPONSESTATUS_CANCEL === $status) {
+            return $this->unserializeCancelAuthorizationResponse($data);
+        }
+
+        throw new \InvalidArgumentException("Unknown reponse status: {$status}");
     }
 
     /**
      * @param array $data
      * @return SuccessfulAuthorizationResponse
      */
-    public function parseSuccessAuthorizationResponse(array $data)
+    public function unserializeSuccessAuthorizationResponse(array $data)
     {
-        return $this->parseAuthorizationResponse(new SuccessfulAuthorizationResponse(), $data);
-    }
-
-    /**
-     * @param array $data
-     * @return FailedAuthorizationResponse
-     */
-    public function parseFailedAuthorizationResponse(array $data)
-    {
-        return $this->parseAuthorizationResponse(new FailedAuthorizationResponse(), $data);
-    }
-
-    /**
-     * @param array $data
-     * @return CancelAuthorizationResponse
-     */
-    public function parseCancelAuthorizationResponse(array $data)
-    {
-        return $this->parseAuthorizationResponse(new CancelAuthorizationResponse(), $data);
-    }
-
-    /**
-     * @param AbstractAuthorizationResponse $authorizationResponse
-     * @param array                         $data
-     * @return AbstractAuthorizationResponse
-     */
-    protected function parseAuthorizationResponse(AbstractAuthorizationResponse $authorizationResponse, array $data)
-    {
+        $authorizationResponse = new SuccessfulAuthorizationResponse();
         $this->serializer->unserializeFromArray($authorizationResponse, $data);
 
         return $authorizationResponse;
     }
 
     /**
-     * @return ConstraintViolationInterface
+     * @param array $data
+     * @return FailedAuthorizationResponse
      */
-    public function getAndCleanViolations()
+    public function unserializeFailedAuthorizationResponse(array $data)
     {
-        return $this->errorHandler->getAndCleanViolations();
+        $authorizationResponse = new FailedAuthorizationResponse();
+        $this->serializer->unserializeFromArray($authorizationResponse, $data);
+
+        return $authorizationResponse;
+    }
+
+    /**
+     * @param array $data
+     * @return CancelAuthorizationResponse
+     */
+    public function unserializeCancelAuthorizationResponse(array $data)
+    {
+        $authorizationResponse = new CancelAuthorizationResponse();
+        $this->serializer->unserializeFromArray($authorizationResponse, $data);
+
+        return $authorizationResponse;
+    }
+
+    /**
+     * @param AbstractAuthorizationResponse $authorizationResponse
+     * @return \Symfony\Component\Validator\ConstraintViolationListInterface
+     */
+    public function validateAuthorizationResponse(AbstractAuthorizationResponse $authorizationResponse)
+    {
+        $violations = $this->validator->validate($authorizationResponse);
+        $this->errorHandler->violations($violations);
+
+        return $violations;
     }
 }

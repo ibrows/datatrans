@@ -159,7 +159,7 @@ abstract class AbstractAuthorizationResponse extends AbstractData
     {
         $status = $this->getStatus();
 
-        if (!in_array($status, array_keys(\Dominikzogg\ClassHelpers\getConstantsWithPrefix(__CLASS__, 'STATUS_')))) {
+        if (!in_array($status, array_keys(\Dominikzogg\ClassHelpers\getConstantsWithPrefix(__CLASS__, 'RESPONSESTATUS_')))) {
             $context->addViolationAt('status', "Unknown status '{$status}' given!");
         }
     }
@@ -179,7 +179,7 @@ abstract class AbstractAuthorizationResponse extends AbstractData
         $metadata->addPropertyConstraint('uppTransactionId', new Regex(array('pattern' => Pattern::NUMERIC)));
 
         $metadata->addPropertyConstraint('refNo', new NotBlank());
-        $metadata->addPropertyConstraint('refNo', new Length(array('min' => 18, 'max' => 18)));
+        $metadata->addPropertyConstraint('refNo', new Length(array('min' => 0, 'max' => 18)));
         $metadata->addPropertyConstraint('refNo', new Regex(array('pattern' => Pattern::ALPHA_NUMERIC)));
 
         $metadata->addPropertyConstraint('amount', new NotBlank());

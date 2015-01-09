@@ -50,11 +50,7 @@ class HiddenAuthorizationWithCardNoTest extends \PHPUnit_Framework_TestCase
         $hiddenAuthorizationRequest->setUppCustomerEmail(TestDataInterface::CUSTOMER_EMAIL);
         $hiddenAuthorizationRequest->setUppCustomerLanguage(TestDataInterface::CUSTOMER_LANGUAGE);
 
-        $authorizationRequestData = $authorization->buildAuthorizationRequestData($hiddenAuthorizationRequest);
-        $this->assertArrayHasKey('uppCustomerLanguage', $authorizationRequestData);
-        $this->assertEquals(TestDataInterface::CUSTOMER_LANGUAGE, $authorizationRequestData['uppCustomerLanguage']);
-
-        $violations = $authorization->getAndCleanViolations();
+        $violations = $authorization->validateAuthorizationRequest($hiddenAuthorizationRequest);
 
         if (count($violations)) {
             var_dump($violations);
@@ -62,12 +58,21 @@ class HiddenAuthorizationWithCardNoTest extends \PHPUnit_Framework_TestCase
 
         $this->assertCount(0, $violations);
 
+        $authorizationRequestData = $authorization->serializeAuthorizationRequestData($hiddenAuthorizationRequest);
+
+        $this->assertArrayHasKey('uppCustomerLanguage', $authorizationRequestData);
+        $this->assertEquals(TestDataInterface::CUSTOMER_LANGUAGE, $authorizationRequestData['uppCustomerLanguage']);
+
+        $data = http_build_query($authorizationRequestData);
+
+        //echo DataInterface::URL_AUTHORIZATION . '?' . $data; die();
+
         $response = $httpClient->request(new Request(
             '1.1',
             Request::METHOD_POST,
             DataInterface::URL_AUTHORIZATION,
             array(),
-            http_build_query($authorizationRequestData)
+            $data
         ));
 
         $this->assertEquals(200, $response->getStatusCode());
@@ -80,9 +85,8 @@ class HiddenAuthorizationWithCardNoTest extends \PHPUnit_Framework_TestCase
         $queryParams = array();
         parse_str(parse_url(TestDataInterface::RESPONSE_SUCCESS, PHP_URL_QUERY), $queryParams);
 
-        $successAuthorizationResponse = $authorization->parseSuccessAuthorizationResponse($queryParams);
-
-        $violations = $authorization->getAndCleanViolations();
+        $successAuthorizationResponse = $authorization->unserializeSuccessAuthorizationResponse($queryParams);
+        $violations = $authorization->validateAuthorizationResponse($successAuthorizationResponse);
 
         if (count($violations)) {
             var_dump($violations);
@@ -93,13 +97,13 @@ class HiddenAuthorizationWithCardNoTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('01', $successAuthorizationResponse->getResponseCode());
         $this->assertEquals('Authorized', $successAuthorizationResponse->getResponseMessage());
         $this->assertEquals(TestDataInterface::PAYMENTMETHOD, $successAuthorizationResponse->getPMethod());
-        $this->assertEquals(null, $successAuthorizationResponse->getReqType());
-        $this->assertEquals('110832', $successAuthorizationResponse->getAcqAuthorizationCode());
+        $this->assertEquals(DataInterface::REQTYPE_AUTHORIZATIONONLY, $successAuthorizationResponse->getReqType());
+        $this->assertEquals('131256', $successAuthorizationResponse->getAcqAuthorizationCode());
         $this->assertEquals(null, $successAuthorizationResponse->getAliasCC());
         $this->assertEquals(null, $successAuthorizationResponse->getMaskedCC());
         $this->assertEquals(null, $successAuthorizationResponse->getSign2());
         $this->assertEquals(null, $successAuthorizationResponse->getVirtualCardNo());
-        $this->assertEquals('141204110831522029', $successAuthorizationResponse->getUppTransactionId());
+        $this->assertEquals('150109131255230325', $successAuthorizationResponse->getUppTransactionId());
         $this->assertEquals(TestDataInterface::REFNO, $successAuthorizationResponse->getRefNo());
         $this->assertEquals(TestDataInterface::AMOUNT, $successAuthorizationResponse->getAmount());
         $this->assertEquals(TestDataInterface::CURRENCY, $successAuthorizationResponse->getCurrency());
@@ -114,23 +118,23 @@ class HiddenAuthorizationWithCardNoTest extends \PHPUnit_Framework_TestCase
         $queryParams = array();
         parse_str(parse_url(TestDataInterface::RESPONSE_FAILED, PHP_URL_QUERY), $queryParams);
 
-        $failedAuthorizationResponse = $authorization->parseFailedAuthorizationResponse($queryParams);
-
-        $violations = $authorization->getAndCleanViolations();
+        $failedAuthorizationResponse = $authorization->unserializeFailedAuthorizationResponse($queryParams);
+        $violations = $authorization->validateAuthorizationResponse($failedAuthorizationResponse);
 
         if (count($violations)) {
             var_dump($violations);
+            die();
         }
 
         $this->assertCount(0, $violations);
 
-        $this->assertEquals('1003', $failedAuthorizationResponse->getErrorCode());
-        $this->assertEquals('null', $failedAuthorizationResponse->getErrorMessage());
-        $this->assertEquals('merchantId', $failedAuthorizationResponse->getErrorDetail());
-        $this->assertEquals(null, $failedAuthorizationResponse->getPMethod());
-        $this->assertEquals(null, $failedAuthorizationResponse->getReqType());
-        $this->assertEquals(null, $failedAuthorizationResponse->getAcqErrorCode());
-        $this->assertEquals('141204131558314439', $failedAuthorizationResponse->getUppTransactionId());
+        $this->assertEquals('1403', $failedAuthorizationResponse->getErrorCode());
+        $this->assertEquals('declined', $failedAuthorizationResponse->getErrorMessage());
+        $this->assertEquals('Declined', $failedAuthorizationResponse->getErrorDetail());
+        $this->assertEquals(TestDataInterface::PAYMENTMETHOD, $failedAuthorizationResponse->getPMethod());
+        $this->assertEquals(DataInterface::REQTYPE_AUTHORIZATIONONLY, $failedAuthorizationResponse->getReqType());
+        $this->assertEquals('50', $failedAuthorizationResponse->getAcqErrorCode());
+        $this->assertEquals('150109133844846615', $failedAuthorizationResponse->getUppTransactionId());
         $this->assertEquals(TestDataInterface::REFNO, $failedAuthorizationResponse->getRefNo());
         $this->assertEquals(TestDataInterface::AMOUNT, $failedAuthorizationResponse->getAmount());
         $this->assertEquals(TestDataInterface::CURRENCY, $failedAuthorizationResponse->getCurrency());

@@ -228,7 +228,7 @@ class SuccessfulAuthorizationResponse extends AbstractAuthorizationResponse
         $uppMsgType = $this->getUppMsgType();
 
         if (!in_array($uppMsgType, array_keys(\Dominikzogg\ClassHelpers\getConstantsWithPrefix(__CLASS__, 'MSGTYPE_')))) {
-            $context->addViolationAt('status', "Unknown uppMsgType '{$uppMsgType}' given!");
+            $context->addViolationAt('uppMsgType', "Unknown uppMsgType '{$uppMsgType}' given!");
         }
     }
 
@@ -240,7 +240,7 @@ class SuccessfulAuthorizationResponse extends AbstractAuthorizationResponse
         $reqType = $this->getReqType();
 
         if (!in_array($reqType, array_keys(\Dominikzogg\ClassHelpers\getConstantsWithPrefix(__CLASS__, 'REQTYPE_')))) {
-            $context->addViolationAt('status', "Unknown reqType '{$reqType}' given!");
+            $context->addViolationAt('reqType', "Unknown reqType '{$reqType}' given!");
         }
     }
 
@@ -252,7 +252,7 @@ class SuccessfulAuthorizationResponse extends AbstractAuthorizationResponse
         parent::loadValidatorMetadata($metadata);
 
         $metadata->addPropertyConstraint('responseCode', new NotBlank());
-        $metadata->addPropertyConstraint('responseCode', new Length(array('min' => 4, 'max' => 4)));
+        $metadata->addPropertyConstraint('responseCode', new Length(array('min' => 0, 'max' => 4)));
         $metadata->addPropertyConstraint('responseCode', new Regex(array('pattern' => Pattern::NUMERIC)));
 
         $metadata->addPropertyConstraint('responseMessage', new NotBlank());
@@ -285,7 +285,7 @@ class SuccessfulAuthorizationResponse extends AbstractAuthorizationResponse
             new MappingConfiguration('responseCode', 'responseCode'),
             new MappingConfiguration('responseMessage', 'responseMessage'),
             new MappingConfiguration('pMethod', 'pmethod'),
-            new MappingConfiguration('reqType', 'reqType'),
+            new MappingConfiguration('reqType', 'reqtype'),
             new MappingConfiguration('acqAuthorizationCode', 'acqAuthorizationCode'),
             new MappingConfiguration('aliasCC', 'aliasCC'),
             new MappingConfiguration('maskedCC', 'maskedCC'),
