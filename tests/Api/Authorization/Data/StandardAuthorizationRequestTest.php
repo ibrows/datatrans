@@ -2,13 +2,23 @@
 
 namespace Ibrows\Tests\SaferpayBusiness\Api\SecureCardData\Add\Data;
 
+use Ibrows\DataTrans\Api\Authorization\Authorization;
 use Ibrows\DataTrans\Api\Authorization\Data\Request\StandardAuthorizationRequest;
 use Ibrows\DataTrans\DataInterface;
+use Ibrows\DataTrans\Error\ErrorHandler;
+use Ibrows\DataTrans\Serializer\Serializer;
 use Ibrows\Tests\DataTrans\TestDataInterface;
+use Psr\Log\NullLogger;
 use Symfony\Component\Validator\Validation;
+use Symfony\Component\Validator\ValidatorInterface;
 
 class StandardAuthorizationRequestTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var Authorization
+     */
+    protected $authorization;
+
     /**
      * @param StandardAuthorizationRequest $hiddenAuthorizationRequest
      * @param int        $violationCount
@@ -24,7 +34,7 @@ class StandardAuthorizationRequestTest extends \PHPUnit_Framework_TestCase
 
     public function testGetterSetterWithCardNo()
     {
-        StandardAuthorizationRequest::createValidInstance(
+        $this->getAuthorization()->createStandardAuthorizationRequest(
             TestDataInterface::MERCHANTID,
             TestDataInterface::AMOUNT,
             TestDataInterface::CURRENCY,
@@ -124,7 +134,7 @@ class StandardAuthorizationRequestTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array(
-                StandardAuthorizationRequest::createValidInstance(
+                $this->getAuthorization()->createStandardAuthorizationRequest(
                     TestDataInterface::MERCHANTID,
                     TestDataInterface::AMOUNT,
                     TestDataInterface::CURRENCY,
@@ -137,7 +147,7 @@ class StandardAuthorizationRequestTest extends \PHPUnit_Framework_TestCase
                 0
             ),
             array(
-                StandardAuthorizationRequest::createValidInstance(
+                $this->getAuthorization()->createStandardAuthorizationRequest(
                     null,
                     null,
                     null,
@@ -153,7 +163,27 @@ class StandardAuthorizationRequestTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     *
+     * @return Authorization
+     */
+    protected function getAuthorization()
+    {
+        if (null === $this->authorization) {
+            $errorHandler = new ErrorHandler(new NullLogger());
+            $serializer = new Serializer($errorHandler);
+            $validator = $this->getValidator();
+
+            $this->authorization =  new Authorization(
+                $validator,
+                $errorHandler,
+                $serializer
+            );
+        }
+
+        return $this->authorization;
+    }
+
+    /**
+     * @return ValidatorInterface
      */
     protected function getValidator()
     {

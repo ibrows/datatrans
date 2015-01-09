@@ -3,6 +3,9 @@
 namespace Ibrows\DataTrans\Api\Authorization;
 
 use Ibrows\DataTrans\Api\Authorization\Data\Request\AbstractAuthorizationRequest;
+use Ibrows\DataTrans\Api\Authorization\Data\Request\HiddenAuthorizationRequestWithAliasCC;
+use Ibrows\DataTrans\Api\Authorization\Data\Request\HiddenAuthorizationRequestWithCardNo;
+use Ibrows\DataTrans\Api\Authorization\Data\Request\StandardAuthorizationRequest;
 use Ibrows\DataTrans\Api\Authorization\Data\Response\AbstractAuthorizationResponse;
 use Ibrows\DataTrans\Api\Authorization\Data\Response\CancelAuthorizationResponse;
 use Ibrows\DataTrans\Api\Authorization\Data\Response\FailedAuthorizationResponse;
@@ -43,6 +46,132 @@ class Authorization
         $this->validator = $validator;
         $this->errorHandler = $ErrorHandler;
         $this->serializer = $Serializer;
+    }
+
+    /**
+     * @param string $merchantId
+     * @param string $amount
+     * @param string $currency
+     * @param string $refNo
+     * @param string $successUrl
+     * @param string $errorUrl
+     * @param string $cancelUrl
+     * @param string|null $sign
+     * @return StandardAuthorizationRequest
+     */
+    public function createStandardAuthorizationRequest(
+        $merchantId,
+        $amount,
+        $currency,
+        $refNo,
+        $successUrl,
+        $errorUrl,
+        $cancelUrl,
+        $sign = null
+    ) {
+        $authorizationRequest = new StandardAuthorizationRequest();
+        $authorizationRequest
+            ->setMerchantId($merchantId)
+            ->setAmount($amount)
+            ->setCurrency($currency)
+            ->setRefNo($refNo)
+            ->setSuccessUrl($successUrl)
+            ->setErrorUrl($errorUrl)
+            ->setCancelUrl($cancelUrl)
+            ->setSign($sign)
+        ;
+
+        return $authorizationRequest;
+    }
+
+    /**
+     * @param string $merchantId
+     * @param string $amount
+     * @param string $currency
+     * @param string $refNo
+     * @param string $successUrl
+     * @param string $errorUrl
+     * @param string $cancelUrl
+     * @param string $paymentMethod
+     * @param string $cardNo
+     * @param string $expm
+     * @param string $expy
+     * @param string $cvv
+     * @param string|null $sign
+     * @return HiddenAuthorizationRequestWithCardNo
+     */
+    public function createHiddenAuthorizationRequestWithCardNo(
+        $merchantId,
+        $amount,
+        $currency,
+        $refNo,
+        $successUrl,
+        $errorUrl,
+        $cancelUrl,
+        $paymentMethod,
+        $cardNo,
+        $expm,
+        $expy,
+        $cvv,
+        $sign = null
+    ) {
+        $authorizationRequest = new HiddenAuthorizationRequestWithCardNo();
+        $authorizationRequest
+            ->setMerchantId($merchantId)
+            ->setAmount($amount)
+            ->setCurrency($currency)
+            ->setRefNo($refNo)
+            ->setSuccessUrl($successUrl)
+            ->setErrorUrl($errorUrl)
+            ->setCancelUrl($cancelUrl)
+            ->setPaymentMethod($paymentMethod)
+            ->setCardNo($cardNo)
+            ->setExpm($expm)
+            ->setExpy($expy)
+            ->setCvv($cvv)
+            ->setSign($sign)
+        ;
+
+        return $authorizationRequest;
+    }
+
+    /**
+     * @param string $merchantId
+     * @param string $amount
+     * @param string $currency
+     * @param string $refNo
+     * @param string $successUrl
+     * @param string $errorUrl
+     * @param string $cancelUrl
+     * @param string $aliasCC
+     * @param string|null $sign
+     * @return HiddenAuthorizationRequestWithAliasCC
+     */
+    public function createHiddenAuthorizationRequestWithAliasCC(
+        $merchantId,
+        $amount,
+        $currency,
+        $refNo,
+        $successUrl,
+        $errorUrl,
+        $cancelUrl,
+        $aliasCC,
+        $sign = null
+    ) {
+        $authorizationRequest = new HiddenAuthorizationRequestWithAliasCC();
+        $authorizationRequest
+            ->setMerchantId($merchantId)
+            ->setAmount($amount)
+            ->setCurrency($currency)
+            ->setRefNo($refNo)
+            ->setSuccessUrl($successUrl)
+            ->setErrorUrl($errorUrl)
+            ->setCancelUrl($cancelUrl)
+            ->setAliasCC($aliasCC)
+            ->setSign($sign)
+        ;
+
+        return $authorizationRequest;
     }
 
     /**

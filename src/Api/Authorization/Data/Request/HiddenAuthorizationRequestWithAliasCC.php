@@ -22,44 +22,6 @@ class HiddenAuthorizationRequestWithAliasCC extends AbstractAuthorizationRequest
     protected $hiddenMode = self::BOOL_TRUE;
 
     /**
-     * @param string $merchantId
-     * @param string $amount
-     * @param string $currency
-     * @param string $refNo
-     * @param string $successUrl
-     * @param string $errorUrl
-     * @param string $cancelUrl
-     * @param string $aliasCC
-     * @param string $sign
-     * @return static
-     */
-    public static function createValidInstance(
-        $merchantId,
-        $amount,
-        $currency,
-        $refNo,
-        $successUrl,
-        $errorUrl,
-        $cancelUrl,
-        $aliasCC,
-        $sign = null
-    ) {
-        $instance = new static();
-
-        $instance->setMerchantId($merchantId);
-        $instance->setAmount($amount);
-        $instance->setCurrency($currency);
-        $instance->setRefNo($refNo);
-        $instance->setSuccessUrl($successUrl);
-        $instance->setErrorUrl($errorUrl);
-        $instance->setCancelUrl($cancelUrl);
-        $instance->setAliasCC($aliasCC);
-        $instance->setSign($sign);
-
-        return $instance;
-    }
-
-    /**
      * @return string
      */
     public function getAliasCC()

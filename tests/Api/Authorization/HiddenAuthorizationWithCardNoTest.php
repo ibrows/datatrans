@@ -24,7 +24,7 @@ class HiddenAuthorizationWithCardNoTest extends \PHPUnit_Framework_TestCase
         $authorization = $this->getAuthorization();
         $httpClient = $this->getHttpClient();
 
-        $hiddenAuthorizationRequest = HiddenAuthorizationRequestWithCardNo::createValidInstance(
+        $authorizationRequest = $this->getAuthorization()->createHiddenAuthorizationRequestWithCardNo(
             TestDataInterface::MERCHANTID,
             TestDataInterface::AMOUNT,
             TestDataInterface::CURRENCY,
@@ -39,18 +39,18 @@ class HiddenAuthorizationWithCardNoTest extends \PHPUnit_Framework_TestCase
             TestDataInterface::CVV
         );
 
-        $hiddenAuthorizationRequest->setUppWebResponseMethod(DataInterface::RESPONSEMETHOD_GET);
-        $hiddenAuthorizationRequest->setUppCustomerDetails(DataInterface::CUSTOMERDETAIL_TRUE);
-        $hiddenAuthorizationRequest->setUppCustomerFirstName(TestDataInterface::CUSTOMER_FIRSTNAME);
-        $hiddenAuthorizationRequest->setUppCustomerLastName(TestDataInterface::CUSTOMER_LASTNAME);
-        $hiddenAuthorizationRequest->setUppCustomerStreet(TestDataInterface::CUSTOMER_STREET);
-        $hiddenAuthorizationRequest->setUppCustomerCity(TestDataInterface::CUSTOMER_CITY);
-        $hiddenAuthorizationRequest->setUppCustomerZipCode(TestDataInterface::CUSTOMER_ZIPCODE);
-        $hiddenAuthorizationRequest->setUppCustomerCountry(TestDataInterface::CUSTOMER_COUNTRY);
-        $hiddenAuthorizationRequest->setUppCustomerEmail(TestDataInterface::CUSTOMER_EMAIL);
-        $hiddenAuthorizationRequest->setUppCustomerLanguage(TestDataInterface::CUSTOMER_LANGUAGE);
+        $authorizationRequest->setUppWebResponseMethod(DataInterface::RESPONSEMETHOD_GET);
+        $authorizationRequest->setUppCustomerDetails(DataInterface::CUSTOMERDETAIL_TRUE);
+        $authorizationRequest->setUppCustomerFirstName(TestDataInterface::CUSTOMER_FIRSTNAME);
+        $authorizationRequest->setUppCustomerLastName(TestDataInterface::CUSTOMER_LASTNAME);
+        $authorizationRequest->setUppCustomerStreet(TestDataInterface::CUSTOMER_STREET);
+        $authorizationRequest->setUppCustomerCity(TestDataInterface::CUSTOMER_CITY);
+        $authorizationRequest->setUppCustomerZipCode(TestDataInterface::CUSTOMER_ZIPCODE);
+        $authorizationRequest->setUppCustomerCountry(TestDataInterface::CUSTOMER_COUNTRY);
+        $authorizationRequest->setUppCustomerEmail(TestDataInterface::CUSTOMER_EMAIL);
+        $authorizationRequest->setUppCustomerLanguage(TestDataInterface::CUSTOMER_LANGUAGE);
 
-        $violations = $authorization->validateAuthorizationRequest($hiddenAuthorizationRequest);
+        $violations = $authorization->validateAuthorizationRequest($authorizationRequest);
 
         if (count($violations)) {
             var_dump($violations);
@@ -58,7 +58,7 @@ class HiddenAuthorizationWithCardNoTest extends \PHPUnit_Framework_TestCase
 
         $this->assertCount(0, $violations);
 
-        $authorizationRequestData = $authorization->serializeAuthorizationRequest($hiddenAuthorizationRequest);
+        $authorizationRequestData = $authorization->serializeAuthorizationRequest($authorizationRequest);
 
         $this->assertArrayHasKey('uppCustomerLanguage', $authorizationRequestData);
         $this->assertEquals(TestDataInterface::CUSTOMER_LANGUAGE, $authorizationRequestData['uppCustomerLanguage']);

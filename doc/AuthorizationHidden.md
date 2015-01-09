@@ -23,7 +23,7 @@ $authorization = new SimpleAuthorization($authorization);
 #### With cardnumber
 
 ``` {.php}
-$hiddenAuthorizationRequest = HiddenAuthorizationRequestWithCardNo::createValidInstance(
+$authorizationRequest = $authorization->createHiddenAuthorizationRequestWithCardNo(
     TestDataInterface::MERCHANTID,
     TestDataInterface::AMOUNT,
     TestDataInterface::CURRENCY,
@@ -42,7 +42,7 @@ $hiddenAuthorizationRequest = HiddenAuthorizationRequestWithCardNo::createValidI
 #### With aliascc
 
 ``` {.php}
-$hiddenAuthorizationRequest = HiddenAuthorizationRequestWithAliasCC::createValidInstance(
+$authorizationRequest = $authorization->createHiddenAuthorizationRequestWithAliasCC(
     TestDataInterface::MERCHANTID,
     TestDataInterface::AMOUNT,
     TestDataInterface::CURRENCY,
@@ -55,28 +55,28 @@ $hiddenAuthorizationRequest = HiddenAuthorizationRequestWithAliasCC::createValid
 ```
 
 ``` {.php}
-$hiddenAuthorizationRequest->setUppWebResponseMethod(DataInterface::RESPONSEMETHOD_GET);
-$hiddenAuthorizationRequest->setUppCustomerDetails(DataInterface::CUSTOMERDETAIL_TRUE);
-$hiddenAuthorizationRequest->setUppCustomerFirstName(TestDataInterface::CUSTOMER_FIRSTNAME);
-$hiddenAuthorizationRequest->setUppCustomerLastName(TestDataInterface::CUSTOMER_LASTNAME);
-$hiddenAuthorizationRequest->setUppCustomerStreet(TestDataInterface::CUSTOMER_STREET);
-$hiddenAuthorizationRequest->setUppCustomerCity(TestDataInterface::CUSTOMER_CITY);
-$hiddenAuthorizationRequest->setUppCustomerZipCode(TestDataInterface::CUSTOMER_ZIPCODE);
-$hiddenAuthorizationRequest->setUppCustomerCountry(TestDataInterface::CUSTOMER_COUNTRY);
-$hiddenAuthorizationRequest->setUppCustomerEmail(TestDataInterface::CUSTOMER_EMAIL);
-$hiddenAuthorizationRequest->setUppCustomerLanguage(TestDataInterface::CUSTOMER_LANGUAGE);
+$authorizationRequest->setUppWebResponseMethod(DataInterface::RESPONSEMETHOD_GET);
+$authorizationRequest->setUppCustomerDetails(DataInterface::CUSTOMERDETAIL_TRUE);
+$authorizationRequest->setUppCustomerFirstName(TestDataInterface::CUSTOMER_FIRSTNAME);
+$authorizationRequest->setUppCustomerLastName(TestDataInterface::CUSTOMER_LASTNAME);
+$authorizationRequest->setUppCustomerStreet(TestDataInterface::CUSTOMER_STREET);
+$authorizationRequest->setUppCustomerCity(TestDataInterface::CUSTOMER_CITY);
+$authorizationRequest->setUppCustomerZipCode(TestDataInterface::CUSTOMER_ZIPCODE);
+$authorizationRequest->setUppCustomerCountry(TestDataInterface::CUSTOMER_COUNTRY);
+$authorizationRequest->setUppCustomerEmail(TestDataInterface::CUSTOMER_EMAIL);
+$authorizationRequest->setUppCustomerLanguage(TestDataInterface::CUSTOMER_LANGUAGE);
 ```
 
 ### Validate authorization request (not in SimpleAuthorization)
 
 ``` {.php}
-$violations = $authorization->validateAuthorizationRequest($hiddenAuthorizationRequest);
+$violations = $authorization->validateAuthorizationRequest($authorizationRequest);
 ```
 
 ### Get authorization request data
 
 ``` {.php}
-$authorizationRequestData = $authorization->serializeAuthorizationRequest($hiddenAuthorizationRequest);
+$authorizationRequestData = $authorization->serializeAuthorizationRequest($authorizationRequest);
 ```
 
 ### Build url
@@ -98,7 +98,7 @@ die();
 $queryParams = array();
 unserialize_str(unserialize_url($_SERVER['REQUEST_URI'], $queryParams);
 
-$hiddenAuthorizationResponse = $authorization->unserializeAuthorizationResponse($status, $queryParams);
+$authorizationResponse = $authorization->unserializeAuthorizationResponse($status, $queryParams);
 ```
 
 ### Handle success response
@@ -107,7 +107,7 @@ $hiddenAuthorizationResponse = $authorization->unserializeAuthorizationResponse(
 $queryParams = array();
 unserialize_str(unserialize_url($_SERVER['REQUEST_URI'], $queryParams);
 
-$hiddenAuthorizationResponse = $authorization->unserializeSuccessAuthorizationResponse($queryParams);
+$authorizationResponse = $authorization->unserializeSuccessAuthorizationResponse($queryParams);
 ```
 
 ### Handle fail response
@@ -116,7 +116,7 @@ $hiddenAuthorizationResponse = $authorization->unserializeSuccessAuthorizationRe
 $queryParams = array();
 unserialize_str(unserialize_url($_SERVER['REQUEST_URI'], $queryParams);
 
-$hiddenAuthorizationResponse = $authorization->unserializeFailedAuthorizationResponse($queryParams);
+$authorizationResponse = $authorization->unserializeFailedAuthorizationResponse($queryParams);
 ```
 
 ### Handle cancel response
@@ -125,11 +125,11 @@ $hiddenAuthorizationResponse = $authorization->unserializeFailedAuthorizationRes
 $queryParams = array();
 unserialize_str(unserialize_url($_SERVER['REQUEST_URI'], $queryParams);
 
-$hiddenAuthorizationResponse = $authorization->unserializeCancelAuthorizationResponse($queryParams);
+$authorizationResponse = $authorization->unserializeCancelAuthorizationResponse($queryParams);
 ```
 
 ### Validate authorization response (not in SimpleAuthorization)
 
 ``` {.php}
-$violations = $authorization->validateAuthorizationResponse($hiddenAuthorizationResponse);
+$violations = $authorization->validateAuthorizationResponse($authorizationResponse);
 ```

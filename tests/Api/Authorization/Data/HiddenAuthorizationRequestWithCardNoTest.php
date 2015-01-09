@@ -2,13 +2,23 @@
 
 namespace Ibrows\Tests\SaferpayBusiness\Api\SecureCardData\Add\Data;
 
+use Ibrows\DataTrans\Api\Authorization\Authorization;
 use Ibrows\DataTrans\Api\Authorization\Data\Request\HiddenAuthorizationRequestWithCardNo;
 use Ibrows\DataTrans\DataInterface;
+use Ibrows\DataTrans\Error\ErrorHandler;
+use Ibrows\DataTrans\Serializer\Serializer;
 use Ibrows\Tests\DataTrans\TestDataInterface;
+use Psr\Log\NullLogger;
 use Symfony\Component\Validator\Validation;
+use Symfony\Component\Validator\ValidatorInterface;
 
 class HiddenAuthorizationRequestWithCardNoTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var Authorization
+     */
+    protected $authorization;
+
     /**
      * @param HiddenAuthorizationRequestWithCardNo $hiddenAuthorizationRequest
      * @param int        $violationCount
@@ -24,7 +34,7 @@ class HiddenAuthorizationRequestWithCardNoTest extends \PHPUnit_Framework_TestCa
 
     public function testGetterSetterWithCardNo()
     {
-        HiddenAuthorizationRequestWithCardNo::createValidInstance(
+        $this->getAuthorization()->createHiddenAuthorizationRequestWithCardNo(
             TestDataInterface::MERCHANTID,
             TestDataInterface::AMOUNT,
             TestDataInterface::CURRENCY,
@@ -141,7 +151,7 @@ class HiddenAuthorizationRequestWithCardNoTest extends \PHPUnit_Framework_TestCa
     {
         return array(
             array(
-                HiddenAuthorizationRequestWithCardNo::createValidInstance(
+                $this->getAuthorization()->createHiddenAuthorizationRequestWithCardNo(
                     TestDataInterface::MERCHANTID,
                     TestDataInterface::AMOUNT,
                     TestDataInterface::CURRENCY,
@@ -159,7 +169,7 @@ class HiddenAuthorizationRequestWithCardNoTest extends \PHPUnit_Framework_TestCa
                 0
             ),
             array(
-                HiddenAuthorizationRequestWithCardNo::createValidInstance(
+                $this->getAuthorization()->createHiddenAuthorizationRequestWithCardNo(
                     null,
                     null,
                     null,
@@ -180,7 +190,27 @@ class HiddenAuthorizationRequestWithCardNoTest extends \PHPUnit_Framework_TestCa
     }
 
     /**
-     *
+     * @return Authorization
+     */
+    protected function getAuthorization()
+    {
+        if (null === $this->authorization) {
+            $errorHandler = new ErrorHandler(new NullLogger());
+            $serializer = new Serializer($errorHandler);
+            $validator = $this->getValidator();
+
+            $this->authorization =  new Authorization(
+                $validator,
+                $errorHandler,
+                $serializer
+            );
+        }
+
+        return $this->authorization;
+    }
+
+    /**
+     * @return ValidatorInterface
      */
     protected function getValidator()
     {
