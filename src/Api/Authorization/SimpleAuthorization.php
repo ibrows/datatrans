@@ -29,10 +29,10 @@ class SimpleAuthorization
      * @param  AbstractAuthorizationRequest $authorizationRequest
      * @return array
      */
-    public function serializeAuthorizationRequestData(AbstractAuthorizationRequest $authorizationRequest)
+    public function serializeAuthorizationRequest(AbstractAuthorizationRequest $authorizationRequest)
     {
         $this->authorization->validateAuthorizationRequest($authorizationRequest);
-        return $this->authorization->serializeAuthorizationRequestData($authorizationRequest);
+        return $this->authorization->serializeAuthorizationRequest($authorizationRequest);
     }
 
     /**

@@ -12,6 +12,12 @@ $authorization = new Authorization(
 );
 ```
 
+### If you want to use the simple authorization (automatic validation)
+
+``` {.php}
+$authorization = new SimpleAuthorization($authorization);
+```
+
 ### Prepare authorization request
 
 ``` {.php}
@@ -43,10 +49,16 @@ $hiddenAuthorizationRequest->setUppCustomerEmail(TestDataInterface::CUSTOMER_EMA
 $hiddenAuthorizationRequest->setUppCustomerLanguage(TestDataInterface::CUSTOMER_LANGUAGE);
 ```
 
+### Validate authorization request (not in SimpleAuthorization)
+
+``` {.php}
+$violations = $authorization->validateAuthorizationRequest($hiddenAuthorizationRequest);
+```
+
 ### Get authorization request data
 
 ``` {.php}
-$authorizationRequestData = $authorization->serializeAuthorizationRequestData($hiddenAuthorizationRequest);
+$authorizationRequestData = $authorization->serializeAuthorizationRequest($hiddenAuthorizationRequest);
 ```
 
 ### Build url
@@ -62,13 +74,22 @@ header('Location: ' . $url);
 die();
 ```
 
+### Handle response (choose this or the concrete methods)
+
+``` {.php}
+$queryParams = array();
+unserialize_str(unserialize_url($_SERVER['REQUEST_URI'], $queryParams);
+
+$hiddenAuthorizationResponse = $authorization->unserializeAuthorizationResponse($status, $queryParams);
+```
+
 ### Handle success response
 
 ``` {.php}
 $queryParams = array();
 unserialize_str(unserialize_url($_SERVER['REQUEST_URI'], $queryParams);
 
-$successAuthorizationResponse = $authorization->unserializeSuccessAuthorizationResponse($queryParams);
+$hiddenAuthorizationResponse = $authorization->unserializeSuccessAuthorizationResponse($queryParams);
 ```
 
 ### Handle fail response
@@ -77,7 +98,7 @@ $successAuthorizationResponse = $authorization->unserializeSuccessAuthorizationR
 $queryParams = array();
 unserialize_str(unserialize_url($_SERVER['REQUEST_URI'], $queryParams);
 
-$failedAuthorizationResponse = $authorization->unserializeFailedAuthorizationResponse($queryParams);
+$hiddenAuthorizationResponse = $authorization->unserializeFailedAuthorizationResponse($queryParams);
 ```
 
 ### Handle cancel response
@@ -86,5 +107,11 @@ $failedAuthorizationResponse = $authorization->unserializeFailedAuthorizationRes
 $queryParams = array();
 unserialize_str(unserialize_url($_SERVER['REQUEST_URI'], $queryParams);
 
-$cancelAuthorizationResponse = $authorization->unserializeCancelAuthorizationResponse($queryParams);
+$hiddenAuthorizationResponse = $authorization->unserializeCancelAuthorizationResponse($queryParams);
+```
+
+### Validate authorization response (not in SimpleAuthorization)
+
+``` {.php}
+$violations = $authorization->validateAuthorizationResponse($hiddenAuthorizationResponse);
 ```

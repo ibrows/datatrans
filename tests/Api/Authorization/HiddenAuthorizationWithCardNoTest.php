@@ -58,7 +58,7 @@ class HiddenAuthorizationWithCardNoTest extends \PHPUnit_Framework_TestCase
 
         $this->assertCount(0, $violations);
 
-        $authorizationRequestData = $authorization->serializeAuthorizationRequestData($hiddenAuthorizationRequest);
+        $authorizationRequestData = $authorization->serializeAuthorizationRequest($hiddenAuthorizationRequest);
 
         $this->assertArrayHasKey('uppCustomerLanguage', $authorizationRequestData);
         $this->assertEquals(TestDataInterface::CUSTOMER_LANGUAGE, $authorizationRequestData['uppCustomerLanguage']);

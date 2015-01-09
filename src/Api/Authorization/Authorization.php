@@ -61,7 +61,7 @@ class Authorization
      * @param  AbstractAuthorizationRequest $authorizationRequest
      * @return array
      */
-    public function serializeAuthorizationRequestData(AbstractAuthorizationRequest $authorizationRequest)
+    public function serializeAuthorizationRequest(AbstractAuthorizationRequest $authorizationRequest)
     {
         return $this->serializer->serializeToArray($authorizationRequest);
     }
