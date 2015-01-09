@@ -52,17 +52,6 @@ class ErrorHandler
     }
 
     /**
-     * @return ConstraintViolationInterface[]
-     */
-    public function getAndCleanViolations()
-    {
-        $violations = $this->violations;
-        $this->violations = array();
-
-        return $violations;
-    }
-
-    /**
      * @param $class
      * @param $propertyName
      * @throws SerializeException
