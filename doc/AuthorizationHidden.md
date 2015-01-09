@@ -20,23 +20,41 @@ $authorization = new SimpleAuthorization($authorization);
 
 ### Prepare authorization request
 
+#### With cardnumber
+
 ``` {.php}
-$hiddenAuthorizationRequest = HiddenAuthorizationRequest::createValidInstance(
+$hiddenAuthorizationRequest = HiddenAuthorizationRequestWithCardNo::createValidInstance(
     TestDataInterface::MERCHANTID,
     TestDataInterface::AMOUNT,
     TestDataInterface::CURRENCY,
     TestDataInterface::REFNO,
     TestDataInterface::URL_SUCCESS,
     TestDataInterface::URL_FAILED,
-    TestDataInterface::URL_CANCEL
+    TestDataInterface::URL_CANCEL,
+    TestDataInterface::PAYMENTMETHOD
+    TestDataInterface::CARDNUMBER
+    TestDataInterface::EXPM
+    TestDataInterface::EXPY
+    TestDataInterface::CVV
 );
+```
 
-$hiddenAuthorizationRequest->setPaymentMethod(TestDataInterface::PAYMENTMETHOD);
-$hiddenAuthorizationRequest->setCardNo(TestDataInterface::CARDNUMBER);
-$hiddenAuthorizationRequest->setExpm(TestDataInterface::EXPM);
-$hiddenAuthorizationRequest->setExpy(TestDataInterface::EXPY);
-$hiddenAuthorizationRequest->setCvv(TestDataInterface::CVV);
+#### With aliascc
 
+``` {.php}
+$hiddenAuthorizationRequest = HiddenAuthorizationRequestWithAliasCC::createValidInstance(
+    TestDataInterface::MERCHANTID,
+    TestDataInterface::AMOUNT,
+    TestDataInterface::CURRENCY,
+    TestDataInterface::REFNO,
+    TestDataInterface::URL_SUCCESS,
+    TestDataInterface::URL_FAILED,
+    TestDataInterface::URL_CANCEL,
+    'aliasCC'
+);
+```
+
+``` {.php}
 $hiddenAuthorizationRequest->setUppWebResponseMethod(DataInterface::RESPONSEMETHOD_GET);
 $hiddenAuthorizationRequest->setUppCustomerDetails(DataInterface::CUSTOMERDETAIL_TRUE);
 $hiddenAuthorizationRequest->setUppCustomerFirstName(TestDataInterface::CUSTOMER_FIRSTNAME);
