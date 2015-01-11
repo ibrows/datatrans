@@ -9,11 +9,6 @@ use Ibrows\DataTrans\Error\SerializeException;
 abstract class AbstractData implements MappingInterface, DataInterface
 {
     /**
-     * @return MappingConfiguration[]
-     */
-    abstract public function getMappingConfigurations();
-
-    /**
      * @param  ErrorHandler       $errorHandler
      * @throws SerializeException
      */

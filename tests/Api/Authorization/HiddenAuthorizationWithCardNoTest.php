@@ -107,7 +107,7 @@ class HiddenAuthorizationWithCardNoTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(TestDataInterface::REFNO, $successAuthorizationResponse->getRefNo());
         $this->assertEquals(TestDataInterface::AMOUNT, $successAuthorizationResponse->getAmount());
         $this->assertEquals(TestDataInterface::CURRENCY, $successAuthorizationResponse->getCurrency());
-        $this->assertEquals('success', $successAuthorizationResponse->getStatus());
+        $this->assertEquals(DataInterface::RESPONSESTATUS_SUCCESS, $successAuthorizationResponse->getStatus());
         $this->assertEquals(DataInterface::MSGTYPE_GET, $successAuthorizationResponse->getUppMsgType());
     }
 

@@ -269,10 +269,10 @@ class SuccessfulAuthorizationResponse extends AbstractAuthorizationResponse
         $metadata->addPropertyConstraint('acqAuthorizationCode', new NotBlank());
         $metadata->addPropertyConstraint('acqAuthorizationCode', new Regex(array('pattern' => Pattern::ALPHA_NUMERIC)));
 
-        $metadata->addPropertyConstraint('aliasCC', new Length(array('min' => 20, 'max' => 20)));
+        $metadata->addPropertyConstraint('aliasCC', new Length(array('min' => 0, 'max' => 20)));
         $metadata->addPropertyConstraint('aliasCC', new Regex(array('pattern' => Pattern::ALPHA_NUMERIC)));
 
-        $metadata->addPropertyConstraint('virtualCardNo', new Length(array('min' => 19, 'max' => 19)));
+        $metadata->addPropertyConstraint('virtualCardNo', new Length(array('min' => 0, 'max' => 19)));
         $metadata->addPropertyConstraint('virtualCardNo', new Regex(array('pattern' => Pattern::NUMERIC)));
     }
 

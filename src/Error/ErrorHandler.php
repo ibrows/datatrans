@@ -63,14 +63,14 @@ class ErrorHandler
         }
 
         $this->logger->critical(
-            "DataTrans: there is no property with name '{propertyName}' on class {class}!", array(
+            "DataTrans: there is no property with name '{propertyName}' on class '{class}'!", array(
                 'propertyName' => $propertyName,
                 'class' => $class
             )
         );
 
         throw new SerializeException($this->prepareExceptionMessage(
-            "DataTrans: there is no property with name '{propertyName}' on class {class}!", array(
+            "DataTrans: there is no property with name '{propertyName}' on class '{class}'!", array(
                 'propertyName' => $propertyName,
                 'class' => $class
             )
@@ -89,14 +89,14 @@ class ErrorHandler
         }
 
         $this->logger->critical(
-            "DataTrans: duplicate property with name '{propertyName}' within configuration on class {class}!", array(
+            "DataTrans: duplicate property with name '{propertyName}' within configuration on class '{class}'!", array(
                 'propertyName' => $propertyName,
                 'class' => $class
             )
         );
 
         throw new SerializeException($this->prepareExceptionMessage(
-            "DataTrans: duplicate property with name '{propertyName}' within configuration on class {class}!", array(
+            "DataTrans: duplicate property with name '{propertyName}' within configuration on class '{class}'!", array(
                 'propertyName' => $propertyName,
                 'class' => $class
             )
@@ -115,14 +115,14 @@ class ErrorHandler
         }
 
         $this->logger->critical(
-            "DataTrans: duplicate serialize name with name '{serializeName}' within configuration on class {class}!", array(
+            "DataTrans: duplicate serialize name with name '{serializeName}' within configuration on class '{class}'!", array(
                 'serializeName' => $serializeName,
                 'class' => $class
             )
         );
 
         throw new SerializeException($this->prepareExceptionMessage(
-            "DataTrans: duplicate serialize name with name '{serializeName}' within configuration on class {class}!", array(
+            "DataTrans: duplicate serialize name with name '{serializeName}' within configuration on class '{class}'!", array(
                 'serializeName' => $serializeName,
                 'class' => $class
             )
