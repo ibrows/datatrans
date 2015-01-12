@@ -1,5 +1,10 @@
 # ibrows/datatrans
 
+[![Build Status](https://api.travis-ci.org/ibrows/datatrans.png?branch=master)](https://travis-ci.org/ibrows/datatrans)
+[![Total Downloads](https://poser.pugx.org/ibrows/datatrans/downloads.png)](https://packagist.org/packages/ibrows/datatrans)
+[![Latest Stable Version](https://poser.pugx.org/ibrows/datatrans/v/stable.png)](https://packagist.org/packages/ibrows/datatrans)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/ibrows/datatrans/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/ibrows/datatrans/?branch=master)
+
 ## Installation
 
 ### Prepare Services
