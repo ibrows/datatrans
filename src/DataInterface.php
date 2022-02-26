@@ -6,8 +6,8 @@ interface DataInterface
 {
     const version = '8.41';
 
-    const URL_AUTHORIZATION = 'https://payment.datatrans.biz/upp/jsp/upStart.jsp';
-    const URL_XMLSETTLEMENT = 'https://payment.datatrans.biz/upp/jsp/XML_processor.jsp';
+    const URL_AUTHORIZATION = 'https://pay.datatrans.com/upp/jsp/upStart.jsp';
+    const URL_XMLSETTLEMENT = 'https://api.datatrans.com/upp/jsp/XML_processor.jsp';
 
     const RESPONSESTATUS_SUCCESS = 'success';
     const RESPONSESTATUS_FAILED = 'error';
